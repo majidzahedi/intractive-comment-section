@@ -1,4 +1,3 @@
-import { typeFromAST } from "graphql";
 import { extendType, list, objectType, stringArg, nonNull, idArg } from "nexus";
 
 export const Comment = objectType({
@@ -13,7 +12,6 @@ export const Comment = objectType({
           where: { comments: { some: { id: parent.id } } },
         });
 
-        console.log(user);
         return user;
       },
     });
@@ -23,7 +21,6 @@ export const Comment = objectType({
         const replies = await context.prisma.comment.findMany({
           where: { parentId: parent.id },
         });
-        // console.log(replies);
         return replies;
       },
     });
@@ -39,7 +36,6 @@ export const comments = extendType({
         const comments = await context.prisma.comment.findMany({
           where: { parentId: null },
         });
-        // console.log(comments);
         return comments;
       },
     });
@@ -55,8 +51,9 @@ export const createComment = extendType({
         comment: nonNull(stringArg()),
       },
       async resolve(_, args, context) {
+        if (!context.userId) throw new Error("Please Login");
         const comment = await context.prisma.comment.create({
-          data: { comment: args.comment, userId: "cl5ze295v0000fgoeu7mh5i3q" },
+          data: { comment: args.comment, userId: context.userId },
         });
         return comment;
       },
@@ -74,14 +71,89 @@ export const createReply = extendType({
         reply: nonNull(stringArg()),
       },
       async resolve(_, args, context) {
+        if (!context.userId) throw new Error("Please Login!");
+
+        const alreadyCommented = await context.prisma.comment.findFirst({
+          where: {
+            AND: [
+              { Children: { some: { userId: context.userId } } },
+              { id: args.commentId },
+            ],
+          },
+        });
+        if (!!alreadyCommented)
+          throw new Error("You've already Commented on that!");
+
+        const isOwnComment = await context.prisma.comment.findFirst({
+          where: { AND: [{ userId: context.userId }, { id: args.commentId }] },
+        });
+        if (!!isOwnComment)
+          throw new Error("You can't Reply to your own Comment!");
+
         const comment = await context.prisma.comment.create({
           data: {
             comment: args.reply,
-            userId: "cl5ze295v0000fgoeu7mh5i3q",
+            userId: context.userId,
             parentId: args.commentId,
           },
         });
         return comment;
+      },
+    });
+  },
+});
+
+export const updateComment = extendType({
+  type: "Mutation",
+  definition(t) {
+    t.field("updateComment", {
+      type: "Comment",
+      args: {
+        commentId: nonNull(idArg()),
+        content: nonNull(stringArg()),
+      },
+      async resolve(_, args, context) {
+        if (!context.userId) throw new Error("Please Login!");
+
+        const isCommentOwner = await context.prisma.comment.findFirst({
+          where: { AND: [{ userId: context.userId }, { id: args.commentId }] },
+        });
+
+        if (!isCommentOwner) throw new Error("Oops! something bad happend!");
+
+        const updatedComment = await context.prisma.comment.update({
+          where: { id: args.commentId },
+          data: { comment: args.content },
+        });
+
+        return updatedComment;
+      },
+    });
+  },
+});
+
+export const deleteComment = extendType({
+  type: "Mutation",
+  definition(t) {
+    t.field("deleteComment", {
+      type: "Comment",
+      args: {
+        commentId: nonNull(idArg()),
+      },
+      async resolve(_, args, context) {
+        if (!context.userId) throw new Error("Please Login!");
+
+        const isCommentOwner = await context.prisma.comment.findFirst({
+          where: { AND: [{ userId: context.userId }, { id: args.commentId }] },
+        });
+
+        if (!isCommentOwner) throw new Error("Oops! Something Bad happend!");
+
+        const deletedComment = await context.prisma.comment.delete({
+          where: { id: args.commentId },
+        });
+
+        return deletedComment;
       },
     });
   },
