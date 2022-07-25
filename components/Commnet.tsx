@@ -1,4 +1,23 @@
-export default function Comment({ comment }) {
+import { useMutation, gql } from "@apollo/client";
+
+const DELETE = gql`
+  mutation DeleteComment($commentId: ID!) {
+    deleteComment(commentId: $commentId) {
+      id
+    }
+  }
+`;
+
+export default function Comment({ comment, user }) {
+  const [deleteComment] = useMutation(DELETE);
+
+  function handleDelete() {
+    deleteComment({
+      variables: { commentId: comment.id },
+      refetchQueries: ["comments"],
+    });
+  }
+
   return (
     <>
       <div className="flex w-full p-4 space-x-4 items-start bg-white rounded-lg">
@@ -19,7 +38,7 @@ export default function Comment({ comment }) {
                 {comment.user.name}
               </p>
               <p
-                hidden={comment.user.name !== "juliusomo"}
+                hidden={comment.user.name !== user.name}
                 className="text-white bg-moderateBlue px-1 text-xs font-medium rounded-sm"
               >
                 you
@@ -29,15 +48,16 @@ export default function Comment({ comment }) {
             <div className="flex space-x-5">
               <button
                 className={`flex items-center space-x-1 hover:opacity-70 text-softRed font-medium ${
-                  comment.user.name !== "juliusomo" && "hidden"
+                  comment.user.name !== user.name && "hidden"
                 }`}
+                onClick={handleDelete}
               >
                 <img src="/images/icon-delete.svg" alt="" />
                 <p>Delete</p>
               </button>
               <button
                 className={`flex items-center space-x-1 hover:opacity-70 text-moderateBlue font-medium ${
-                  comment.user.name !== "juliusomo" && "hidden"
+                  comment.user.name !== user.name && "hidden"
                 }`}
               >
                 <img src="/images/icon-edit.svg" alt="" />
@@ -45,7 +65,7 @@ export default function Comment({ comment }) {
               </button>
               <button
                 className={`flex items-center space-x-1 hover:opacity-70 text-moderateBlue font-medium ${
-                  comment.user.name === "juliusomo" && "hidden"
+                  comment.user.name === user.name && "hidden"
                 }`}
               >
                 <img src="/images/icon-reply.svg" alt="" />
@@ -60,7 +80,9 @@ export default function Comment({ comment }) {
         <div className="w-1  mx-4 md:mx-12  rounded-full bg-grayishBlue"></div>
         <div className="flex space-y-2 flex-col w-full ">
           {comment.replies &&
-            comment.replies.map((reply) => <Comment comment={reply} />)}
+            comment.replies.map((reply) => (
+              <Comment key={reply.id} comment={reply} user={user} />
+            ))}
         </div>
       </div>
     </>

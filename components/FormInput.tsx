@@ -12,7 +12,6 @@ const CREATE_COMMENT = gql`
   }
 `;
 
-export default function FormInput() {
 export default function FormInput({ user, setIsOpen }) {
   const [createComment, { data }] = useMutation(CREATE_COMMENT, {
     refetchQueries: ["comments"],
@@ -35,8 +34,8 @@ export default function FormInput({ user, setIsOpen }) {
       onSubmit={handleSubmit}
     >
       <img
-        src="/images/avatars/image-juliusomo.png"
         onClick={handleClick}
+        src={`/images/avatars/image-${user && user.name}.png`}
         alt="profile"
         className="w-10"
       />

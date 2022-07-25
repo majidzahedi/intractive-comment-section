@@ -31,18 +31,30 @@ const COMMENTS = gql`
   }
 `;
 
+const USER = gql`
+  query User {
+    user {
+      id
+      name
+      email
+    }
+  }
+`;
+
 export default () => {
   const [isOpen, setIsOpen] = useState(false);
   const { data, loading, error } = useQuery(COMMENTS);
+  const { data: userData } = useQuery(USER);
 
   const { comments } = !!data && data;
+  const { user } = !!userData && userData;
 
   return (
     <div className="conteiner bg-veryLightGray min-h-screen">
       {isOpen && <LoginModal setIsOpen={setIsOpen} />}
       <div className="flex space-y-1 flex-col-reverse items-center justify-start py-5 min-h-screen max-w-3xl w-full mx-auto px-4 md:px-0">
-        <CommnetsList comments={comments} />
         <FormInput user={user} setIsOpen={setIsOpen} />
+        <CommnetsList user={user} comments={comments} />
       </div>
     </div>
   );
