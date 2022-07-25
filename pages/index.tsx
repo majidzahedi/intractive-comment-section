@@ -4,6 +4,7 @@ import { useState } from "react";
 import FormInput from "../components/FormInput";
 import CommnetsList from "../components/CommnetsList";
 import LoginModal from "../components/LoginModal";
+import Head from "next/head";
 
 const COMMENTS = gql`
   query comments {
@@ -51,6 +52,11 @@ export default () => {
 
   return (
     <div className="conteiner bg-veryLightGray min-h-screen">
+      <Head>
+        <title>Comment Section</title>
+        <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+        <link rel="shortcut icon" href="/images/favicon.png" />
+      </Head>
       {isOpen && <LoginModal setIsOpen={setIsOpen} />}
       <div className="flex space-y-1 flex-col-reverse items-center justify-start py-5 min-h-screen max-w-3xl w-full mx-auto px-4 md:px-0">
         <FormInput user={user} setIsOpen={setIsOpen} />
