@@ -13,6 +13,7 @@ const CREATE_COMMENT = gql`
 `;
 
 export default function FormInput() {
+export default function FormInput({ user, setIsOpen }) {
   const [createComment, { data }] = useMutation(CREATE_COMMENT, {
     refetchQueries: ["comments"],
   });
@@ -24,6 +25,10 @@ export default function FormInput() {
     createComment({ variables: { comment } });
   }
 
+  function handleClick() {
+    setIsOpen((prev) => !prev);
+  }
+
   return (
     <form
       className="flex items-start justify-between rounded-xl space-x-4 bg-white h-36 py-4  px-4 w-full "
@@ -31,6 +36,7 @@ export default function FormInput() {
     >
       <img
         src="/images/avatars/image-juliusomo.png"
+        onClick={handleClick}
         alt="profile"
         className="w-10"
       />
