@@ -20,14 +20,24 @@ const UPDATE_COMMENT = gql`
   }
 `;
 
+const REPLY = gql`
+  mutation Reply($commentId: ID!, $reply: String!) {
+    Reply(commentId: $commentId, reply: $reply) {
+      comment
+    }
+  }
+`;
+
 export default function FormInput({
   user,
   setIsOpen,
   isEditing,
   comment,
   setIsEditing,
+  isReply,
+  setIsReply,
 }) {
-  const [createComment, { data }] = useMutation(CREATE_COMMENT, {
+  const [createComment] = useMutation(CREATE_COMMENT, {
     refetchQueries: ["comments"],
   });
 
@@ -35,19 +45,30 @@ export default function FormInput({
     refetchQueries: ["comments"],
   });
 
+  const [replyOnComment] = useMutation(REPLY, {
+    refetchQueries: ["comments"],
+  });
+
   function handleSubmit(e) {
     e.preventDefault();
     const inputValue = e.target[0].value;
     if (inputValue === "") return;
-    if (!isEditing) {
-      createComment({ variables: { comment: inputValue } });
-    } else {
+    if (isEditing) {
       updateComment({
         variables: { commentId: comment.id, content: inputValue },
         onCompleted() {
           setIsEditing(false);
         },
       });
+    } else if (isReply) {
+      replyOnComment({
+        variables: { commentId: comment.id, reply: inputValue },
+        onCompleted() {
+          setIsReply(false);
+        },
+      });
+    } else {
+      createComment({ variables: { comment: inputValue } });
     }
   }
 
@@ -79,7 +100,7 @@ export default function FormInput({
         type="submit"
         className="px-6 py-2 rounded-lg bg-moderateBlue text-white font-medium font-sans hover:opacity-75 "
       >
-        {isEditing ? "UPDATE" : "SEND"}
+        {isEditing ? "UPDATE" : isReply ? "REPLY" : "EDIT"}
       </button>
     </form>
   );

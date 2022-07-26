@@ -12,6 +12,7 @@ const DELETE = gql`
 
 export default function Comment({ comment, user }) {
   const [isEditing, setIsEditing] = useState(false);
+  const [isReply, setIsReply] = useState(false);
   const [deleteComment] = useMutation(DELETE);
 
   function handleDelete() {
@@ -71,6 +72,7 @@ export default function Comment({ comment, user }) {
                 className={`flex items-center space-x-1 hover:opacity-70 text-moderateBlue font-medium ${
                   comment.user.name === user.name && "hidden"
                 }`}
+                onClick={() => setIsReply(!isReply)}
               >
                 <img src="/images/icon-reply.svg" alt="" />
                 <span>Reply</span>
@@ -88,8 +90,16 @@ export default function Comment({ comment, user }) {
           )}
         </div>
       </div>
+      {isReply && (
+        <FormInput
+          user={user}
+          isReply={isReply}
+          comment={comment}
+          setIsReply={setIsReply}
+        />
+      )}
       <div className="flex ">
-        <div className="w-1  mx-4 md:mx-12  rounded-full bg-grayishBlue"></div>
+        <div className="w-1  mx-4 md:mx-12  bg-grayishBlue"></div>
         <div className="flex space-y-2 flex-col w-full ">
           {comment.replies &&
             comment.replies.map((reply) => (
