@@ -1,6 +1,7 @@
 import { PrismaClient } from "@prisma/client";
 import { prisma } from "../lib/prisma";
 import { decodeAuthHeader } from "./utils";
+import { MicroRequest } from "apollo-server-micro/dist/types";
 
 export type Context = {
   prisma: PrismaClient;
@@ -10,7 +11,7 @@ export type Context = {
 export async function createContext({
   req,
 }: {
-  req: Request;
+  req: MicroRequest;
 }): Promise<Context> {
   const token =
     req && req.headers.authorization
