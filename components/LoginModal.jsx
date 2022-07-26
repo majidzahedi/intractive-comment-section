@@ -51,7 +51,7 @@ export default function LoginModal({ setIsOpen }) {
   }
 
   return (
-    <div className="flex bg-lightGray/70 items-center justify-center absolute top-0 left-0 min-h-screen w-full ">
+    <div className="flex bg-lightGray/70 items-center justify-center  min-h-screen w-full fixed inset-0">
       <div className=" grid bg-white rounded-lg grid-cols-2 grid-rows-2 p-4 gap-4">
         <div className="capitalize flex  flex-col items-center ">
           <img src="/images/avatars/image-amyrobson.png" alt="" />
