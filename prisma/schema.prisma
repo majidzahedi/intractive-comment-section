@@ -34,7 +34,7 @@ model Comment {
   comment String
 
   Children Comment[] @relation("Comment_Children")
-  parent   Comment?  @relation("Comment_Children", fields: [parentId], references: [id])
+  parent   Comment?  @relation("Comment_Children", fields: [parentId], references: [id], onDelete: Cascade)
   parentId String?
 
   createdAt DateTime @default(now())
