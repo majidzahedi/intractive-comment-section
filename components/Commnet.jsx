@@ -188,6 +188,6 @@ const CommentField = ({ isEditing, comment, setIsEditing }) => {
       setIsEditing={setIsEditing}
     />
   ) : (
-    <p className="text-base text-grayishBlue text-justify">{comment.comment}</p>
+    <p className="text-base text-grayishBlue ">{comment.comment}</p>
   );
 };
