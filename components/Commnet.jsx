@@ -1,4 +1,6 @@
 import { useMutation, gql } from "@apollo/client";
+import FormInput from "../components/FormInput";
+import { useState } from "react";
 
 const DELETE = gql`
   mutation DeleteComment($commentId: ID!) {
@@ -9,6 +11,7 @@ const DELETE = gql`
 `;
 
 export default function Comment({ comment, user }) {
+  const [isEditing, setIsEditing] = useState(false);
   const [deleteComment] = useMutation(DELETE);
 
   function handleDelete() {
@@ -59,6 +62,7 @@ export default function Comment({ comment, user }) {
                 className={`flex items-center space-x-1 hover:opacity-70 text-moderateBlue font-medium ${
                   comment.user.name !== user.name && "hidden"
                 }`}
+                onClick={() => setIsEditing(!isEditing)}
               >
                 <img src="/images/icon-edit.svg" alt="" />
                 <span>Edit</span>
@@ -73,7 +77,15 @@ export default function Comment({ comment, user }) {
               </button>
             </div>
           </div>
-          <p className="text-base text-grayishBlue">{comment.comment}</p>
+          {isEditing ? (
+            <FormInput
+              isEditing={isEditing}
+              comment={comment}
+              setIsEditing={setIsEditing}
+            />
+          ) : (
+            <p className="text-base text-grayishBlue">{comment.comment}</p>
+          )}
         </div>
       </div>
       <div className="flex ">
