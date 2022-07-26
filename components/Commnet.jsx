@@ -24,8 +24,8 @@ export default function Comment({ comment, user }) {
 
   return (
     <>
-      <div className="flex flex-col-reverse w-full p-4 space-y-0 items-start bg-white rounded-lg md:flex-row md:space-x-4">
-        <div className="flex justify-between w-full md:w-auto mt-2 md:mt-0">
+      <div className="flex w-full flex-col-reverse items-start space-y-0 rounded-lg bg-white p-4 md:flex-row md:space-x-4">
+        <div className="mt-2 flex w-full justify-between md:mt-0 md:w-auto">
           <Rate />
           <Crud
             visability="flex md:hidden"
@@ -38,7 +38,7 @@ export default function Comment({ comment, user }) {
             handleDelete={handleDelete}
           />
         </div>
-        <div className="flex flex-col w-full space-y-4">
+        <div className="flex w-full flex-col space-y-4">
           <UserSummery
             comment={comment}
             user={user}
@@ -85,21 +85,21 @@ const UserSummery = ({
   }
 
   return (
-    <div className="flex justify-between items-center">
-      <div className="flex space-x-3 items-center">
+    <div className="flex items-center justify-between">
+      <div className="flex items-center space-x-3">
         <img
           src={`/images/avatars/image-${comment.user.name}.png`}
           alt=""
           className="w-7"
         />
-        <p className="font-medium text-darkBlue text-sm">{comment.user.name}</p>
+        <p className="text-sm font-medium text-darkBlue">{comment.user.name}</p>
         <p
           hidden={comment.user.name !== user.name}
-          className="text-white bg-moderateBlue px-1 text-xs font-medium rounded-sm"
+          className="rounded-sm bg-moderateBlue px-1 text-xs font-medium text-white"
         >
           you
         </p>
-        <p className="text-lightGrayishBlue text-sm">1 Week ago</p>
+        <p className="text-sm text-lightGrayishBlue">1 Week ago</p>
       </div>
       <Crud
         isEditing={isEditing}
@@ -126,7 +126,7 @@ const Crud = ({
 }) => (
   <div className={` space-x-5 ${visability}`}>
     <button
-      className={`flex items-center space-x-1 hover:opacity-70 text-softRed font-medium ${
+      className={`flex items-center space-x-1 font-medium text-softRed hover:opacity-70 ${
         comment.user.name !== user.name && "hidden"
       }`}
       onClick={handleDelete}
@@ -135,7 +135,7 @@ const Crud = ({
       <p>Delete</p>
     </button>
     <button
-      className={`flex items-center space-x-1 hover:opacity-70 text-moderateBlue font-medium ${
+      className={`flex items-center space-x-1 font-medium text-moderateBlue hover:opacity-70 ${
         comment.user.name !== user.name && "hidden"
       }`}
       onClick={() => setIsEditing((prev) => !prev)}
@@ -145,7 +145,7 @@ const Crud = ({
     </button>
     <button
       disabled={user.name === "Anonymous"}
-      className={`flex items-center space-x-1 hover:opacity-70 text-moderateBlue font-medium disabled:opacity-70 ${
+      className={`flex items-center space-x-1 font-medium text-moderateBlue hover:opacity-70 disabled:opacity-70 ${
         comment.user.name === user.name && "hidden"
       }`}
       onClick={() => setIsReply((prev) => !prev)}
@@ -158,10 +158,10 @@ const Crud = ({
 
 const Rate = () => {
   return (
-    <div className="flex rounded-lg py-2 px-4 md:p-4 space-x-3 items-center justify-center  bg-veryLightGray md:flex-col md:space-y-1 md:space-x-0">
-      <button className="text-grayishBlue font-bold ">+</button>
-      <button className="text-moderateBlue font-bold">4</button>
-      <button className="text-grayishBlue font-bold">-</button>
+    <div className="flex items-center justify-center space-x-3 rounded-lg bg-veryLightGray py-2 px-4  md:flex-col md:space-y-1 md:space-x-0 md:p-4">
+      <button className="font-bold text-grayishBlue ">+</button>
+      <button className="font-bold text-moderateBlue">4</button>
+      <button className="font-bold text-grayishBlue">-</button>
     </div>
   );
 };
@@ -169,8 +169,8 @@ const Rate = () => {
 const Replies = ({ comment, user }) => {
   return (
     <div className="flex ">
-      <div className="w-1  mx-4 md:mx-12  bg-grayishBlue"></div>
-      <div className="flex space-y-2 flex-col w-full ">
+      <div className="mx-4  w-1 bg-grayishBlue  md:mx-12"></div>
+      <div className="flex w-full flex-col space-y-2 ">
         {comment.replies &&
           comment.replies.map((reply) => (
             <Comment key={reply.id} comment={reply} user={user} />

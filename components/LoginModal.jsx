@@ -51,27 +51,27 @@ export default function LoginModal({ setIsOpen }) {
   }
 
   return (
-    <div className="flex bg-lightGray/70 items-center justify-center  min-h-screen w-full fixed inset-0">
-      <div className=" grid bg-white rounded-lg grid-cols-2 grid-rows-2 p-4 gap-4">
-        <div className="capitalize flex  flex-col items-center ">
+    <div className="fixed inset-0 flex min-h-screen  w-full items-center justify-center bg-lightGray/70">
+      <div className=" grid grid-cols-2 grid-rows-2 gap-4 rounded-lg bg-white p-4">
+        <div className="flex flex-col  items-center capitalize ">
           <img src="/images/avatars/image-amyrobson.png" alt="" />
           <button name="amyrobson" onClick={handleLogin}>
             amyrobson
           </button>
         </div>
-        <div className="capitalize flex  flex-col items-center ">
+        <div className="flex flex-col  items-center capitalize ">
           <img src="/images/avatars/image-juliusomo.png" alt="" aria-hidden />
           <button onClick={handleLogin} name="juliusomo">
             juliusomo
           </button>
         </div>
-        <div className="capitalize flex  flex-col items-center ">
+        <div className="flex flex-col  items-center capitalize ">
           <img src="/images/avatars/image-maxblagun.png" alt="" />
           <button onClick={handleLogin} name="maxblagun">
             maxblagun
           </button>
         </div>
-        <div className="items-center flex flex-col">
+        <div className="flex flex-col items-center">
           <img src="/images/avatars/image-ramsesmiron.png" alt="" />
           <button
             className="capitalize"

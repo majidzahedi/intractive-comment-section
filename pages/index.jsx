@@ -57,14 +57,14 @@ export default () => {
   const { user } = !!userData ? userData : anonymousUser;
 
   return (
-    <div className="conteiner bg-veryLightGray min-h-screen">
+    <div className="conteiner min-h-screen bg-veryLightGray">
       <Head>
         <title>Comment Section</title>
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
         <link rel="shortcut icon" href="/images/favicon.png" />
       </Head>
       {isOpen && <LoginModal setIsOpen={setIsOpen} />}
-      <div className="flex space-y-1 flex-col-reverse items-center justify-start py-5 min-h-screen max-w-3xl w-full mx-auto px-4 md:px-0">
+      <div className="mx-auto flex min-h-screen w-full max-w-3xl flex-col-reverse items-center justify-start space-y-1 py-5 px-4 md:px-0">
         <FormInput user={user} setIsOpen={setIsOpen} />
         <CommnetsList user={user} comments={comments} />
       </div>
