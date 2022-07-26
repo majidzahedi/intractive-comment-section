@@ -5,6 +5,7 @@ export const Comment = objectType({
   definition(t) {
     t.nonNull.id("id");
     t.nonNull.string("comment");
+    t.nonNull.string("createdAt");
     t.field("user", {
       type: "User",
       async resolve(parent, __, context) {
@@ -35,6 +36,7 @@ export const comments = extendType({
       async resolve(_, __, context) {
         const comments = await context.prisma.comment.findMany({
           where: { parentId: null },
+          orderBy: { createdAt: "asc" },
         });
         return comments;
       },

@@ -1,6 +1,7 @@
 import { useMutation, gql } from "@apollo/client";
 import FormInput from "../components/FormInput";
 import { useState } from "react";
+import moment from "moment";
 
 const DELETE = gql`
   mutation DeleteComment($commentId: ID!) {
@@ -99,7 +100,9 @@ const UserSummery = ({
         >
           you
         </p>
-        <p className="text-sm text-lightGrayishBlue">1 Week ago</p>
+        <p className="text-sm text-lightGrayishBlue">
+          {moment(+comment.createdAt).fromNow()}
+        </p>
       </div>
       <Crud
         isEditing={isEditing}
@@ -160,7 +163,7 @@ const Rate = () => {
   return (
     <div className="flex items-center justify-center space-x-3 rounded-lg bg-veryLightGray py-2 px-4  md:flex-col md:space-y-1 md:space-x-0 md:p-4">
       <button className="font-bold text-grayishBlue ">+</button>
-      <button className="font-bold text-moderateBlue">4</button>
+      <span className="font-bold text-moderateBlue">4</span>
       <button className="font-bold text-grayishBlue">-</button>
     </div>
   );
