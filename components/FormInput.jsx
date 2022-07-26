@@ -78,21 +78,22 @@ export default function FormInput({
 
   return (
     <form
-      className={`flex h-36 w-full items-end justify-between rounded-xl bg-white p-4 pt-1 md:items-start md:space-x-4  md:pt-4 ${
+      className={`flex w-full items-end justify-between rounded-xl bg-white p-4 pt-1 md:items-start md:space-x-4  md:pt-2 ${
         isEditing
           ? "flex-col items-end space-x-0 space-y-2 px-0 py-0"
           : "sticky  flex-1 flex-wrap space-y-4 md:flex-none md:flex-nowrap md:space-x-4 md:space-y-0"
       } `}
       onSubmit={handleSubmit}
     >
-      {!isEditing && user.name !== "Anonymous" ? (
+      {!isEditing && user?.name !== "Anonymous" && (
         <img
           onClick={handleClick}
           src={`/images/avatars/image-${user && user.name}.png`}
           alt="profile"
           className="ml-2 w-10"
         />
-      ) : (
+      )}
+      {user?.name === "Anonymous" && (
         <div
           className="line flex h-8 w-10 items-center justify-center rounded-full bg-darkBlue p-0 font-bold leading-tight text-white"
           onClick={handleClick}
@@ -102,14 +103,14 @@ export default function FormInput({
       )}
       <textarea
         placeholder="Leave a Comment"
-        className="order-first h-24 w-full rounded-lg border border-lightGray px-3 py-2 md:order-none md:h-full"
+        className="order-first h-24 w-full rounded-lg border border-lightGray px-3 py-2 scrollbar-hide md:order-none md:h-full"
         defaultValue={isEditing ? comment.comment : ""}
-        disabled={user.name === "Anonymous"}
+        disabled={user?.name === "Anonymous"}
       />
       <button
         type="submit"
         className="rounded-lg bg-moderateBlue px-6 py-2 font-sans font-medium text-white hover:opacity-75 disabled:opacity-75 "
-        disabled={user.name === "Anonymous"}
+        disabled={user?.name === "Anonymous"}
       >
         {isEditing ? "UPDATE" : isReply ? "REPLY" : "SEND"}
       </button>
