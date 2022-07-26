@@ -2,8 +2,10 @@ import { ApolloClient, createHttpLink, InMemoryCache } from "@apollo/client";
 import { relayStylePagination } from "@apollo/client/utilities";
 import { setContext } from "@apollo/client/link/context";
 
+const URL = process.env.NEXT_PUBLIC_URL as string;
+
 const httpLink = createHttpLink({
-  uri: "http://localhost:3000/api/graphql",
+  uri: URL,
 });
 
 const authLink = setContext((_, { headers }) => {
@@ -19,7 +21,6 @@ const authLink = setContext((_, { headers }) => {
 });
 
 export const client = new ApolloClient({
-  uri: "http://localhost:3000/api/graphql",
   link: authLink.concat(httpLink),
   cache: new InMemoryCache({
     typePolicies: {
