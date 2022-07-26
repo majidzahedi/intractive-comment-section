@@ -42,13 +42,19 @@ const USER = gql`
   }
 `;
 
+const anonymousUser = {
+  user: {
+    name: "Anonymous",
+  },
+};
+
 export default () => {
   const [isOpen, setIsOpen] = useState(false);
   const { data, loading, error } = useQuery(COMMENTS);
   const { data: userData } = useQuery(USER);
 
   const { comments } = !!data && data;
-  const { user } = !!userData && userData;
+  const { user } = !!userData ? userData : anonymousUser;
 
   return (
     <div className="conteiner bg-veryLightGray min-h-screen">
