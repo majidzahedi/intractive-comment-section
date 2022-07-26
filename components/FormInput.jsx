@@ -109,7 +109,9 @@ export default function FormInput({
       />
       <button
         type="submit"
-        className="rounded-lg bg-moderateBlue px-6 py-2 font-sans font-medium text-white hover:opacity-75 disabled:opacity-75 "
+        className={`rounded-lg bg-moderateBlue px-6 py-2 font-sans font-medium text-white hover:opacity-75 disabled:opacity-75 ${
+          isEditing && "self-end"
+        }`}
         disabled={user?.name === "Anonymous"}
       >
         {isEditing ? "UPDATE" : isReply ? "REPLY" : "SEND"}
