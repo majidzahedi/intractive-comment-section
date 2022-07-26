@@ -78,8 +78,10 @@ export default function FormInput({
 
   return (
     <form
-      className={`flex items-start justify-between rounded-xl space-x-4 bg-white h-36 py-4  px-4 w-full ${
-        isEditing ? "flex-col items-end space-x-0 px-0 py-0 space-y-2" : ""
+      className={`flex h-36 w-full items-end justify-between rounded-xl bg-white p-4 pt-1 md:items-start md:space-x-4  md:pt-4 ${
+        isEditing
+          ? "flex-col items-end space-x-0 space-y-2 px-0 py-0"
+          : "sticky  flex-1 flex-wrap space-y-4 md:flex-none md:flex-nowrap md:space-x-4 md:space-y-0"
       } `}
       onSubmit={handleSubmit}
     >
@@ -88,11 +90,11 @@ export default function FormInput({
           onClick={handleClick}
           src={`/images/avatars/image-${user && user.name}.png`}
           alt="profile"
-          className="w-10"
+          className="ml-2 w-10"
         />
       ) : (
         <div
-          className="flex rounded-full bg-darkBlue w-10 h-8 text-white font-bold items-center justify-center line leading-tight p-0"
+          className="line flex h-8 w-10 items-center justify-center rounded-full bg-darkBlue p-0 font-bold leading-tight text-white"
           onClick={handleClick}
         >
           <span>A</span>
@@ -100,16 +102,16 @@ export default function FormInput({
       )}
       <textarea
         placeholder="Leave a Comment"
-        className="w-full px-3 h-full py-2 rounded-lg border border-lightGray self-stretch"
+        className="order-first h-24 w-full rounded-lg border border-lightGray px-3 py-2 md:order-none md:h-full"
         defaultValue={isEditing ? comment.comment : ""}
         disabled={user.name === "Anonymous"}
       />
       <button
         type="submit"
-        className="px-6 py-2 rounded-lg bg-moderateBlue text-white font-medium font-sans hover:opacity-75 disabled:opacity-75 "
+        className="rounded-lg bg-moderateBlue px-6 py-2 font-sans font-medium text-white hover:opacity-75 disabled:opacity-75 "
         disabled={user.name === "Anonymous"}
       >
-        {isEditing ? "UPDATE" : isReply ? "REPLY" : "EDIT"}
+        {isEditing ? "UPDATE" : isReply ? "REPLY" : "SEND"}
       </button>
     </form>
   );
