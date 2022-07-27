@@ -1,13 +1,13 @@
 import FormInput from "../FormInput";
 
-export const CommentField = ({ edditing, commentContent, setIsEditing }) => {
+export const CommentField = ({ edditing, comment, setIsEditing }) => {
   return edditing ? (
     <FormInput
-      comment={commentContent}
+      comment={comment}
       edditing={edditing}
       toggleEdit={setIsEditing}
     />
   ) : (
-    <p className="text-base text-grayishBlue ">{commentContent}</p>
+    <p className="text-base text-grayishBlue ">{comment.comment}</p>
   );
 };

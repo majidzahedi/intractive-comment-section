@@ -37,15 +37,21 @@ export default function FormInput({
   isReply,
   setIsReply,
 }) {
-  const [createComment] = useMutation(CREATE_COMMENT, {
-    refetchQueries: ["comments"],
-  });
+  const [createComment, { loading: createLoading }] = useMutation(
+    CREATE_COMMENT,
+    {
+      refetchQueries: ["comments"],
+    }
+  );
 
-  const [updateComment] = useMutation(UPDATE_COMMENT, {
-    refetchQueries: ["comments"],
-  });
+  const [updateComment, { loading: updateLoading }] = useMutation(
+    UPDATE_COMMENT,
+    {
+      refetchQueries: ["comments"],
+    }
+  );
 
-  const [replyOnComment] = useMutation(REPLY, {
+  const [replyOnComment, { loading: replyLoading }] = useMutation(REPLY, {
     refetchQueries: ["comments"],
   });
 
@@ -87,14 +93,18 @@ export default function FormInput({
           autoFocus
           placeholder="Leave a Comment"
           className="order-first h-24 w-full rounded-lg border border-lightGray px-3 py-2 scrollbar-hide md:order-none "
-          defaultValue={comment}
+          defaultValue={comment.comment}
         />
         <button
           type="submit"
-          className={`self-end rounded-lg bg-moderateBlue px-6 py-2 font-sans font-medium text-white hover:opacity-75 disabled:opacity-75 
-        `}
+          className="flex space-x-1 self-end rounded-lg bg-moderateBlue px-6 py-2 font-sans font-medium text-white hover:opacity-75 disabled:opacity-75"
         >
-          UPDATE
+          <span>
+            {updateLoading && (
+              <div className="flex h-5 w-5 animate-spin rounded-full border-4 border-t-moderateBlue "></div>
+            )}
+          </span>
+          <span>UPDATE</span>
         </button>
       </form>
     );
@@ -131,11 +141,17 @@ export default function FormInput({
       />
       <button
         type="submit"
-        className={`rounded-lg bg-moderateBlue px-6 py-2 font-sans font-medium text-white hover:opacity-75 disabled:opacity-75 
-        `}
+        className="flex space-x-1 rounded-lg bg-moderateBlue px-6 py-2 font-sans font-medium text-white hover:opacity-75 disabled:opacity-75
+        "
         disabled={user?.name === "Anonymous"}
       >
-        {isReply ? "REPLY" : "SEND"}
+        <span>
+          {createLoading ||
+            (replyLoading && (
+              <div className="flex h-5 w-5 animate-spin rounded-full border-4 border-t-moderateBlue "></div>
+            ))}
+        </span>
+        <span>{isReply ? "REPLY" : "SEND"}</span>
       </button>
     </form>
   );

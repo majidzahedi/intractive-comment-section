@@ -60,7 +60,7 @@ export default function Comment({ comment, user }) {
             />
           </UserSummery>
           <CommentField
-            commentContent={comment.comment}
+            comment={comment}
             edditing={settings.isEditing}
             setIsEditing={toggleHandler.toggleEdit}
           />
