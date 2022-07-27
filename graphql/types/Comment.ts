@@ -1,4 +1,17 @@
-import { extendType, list, objectType, stringArg, nonNull, idArg } from "nexus";
+import {
+  extendType,
+  list,
+  objectType,
+  stringArg,
+  nonNull,
+  idArg,
+  enumType,
+} from "nexus";
+
+export const voteStatus = enumType({
+  name: "voteStatus",
+  members: ["UPVOTE", "DOWNVOTE"],
+});
 
 export const Comment = objectType({
   name: "Comment",
@@ -55,6 +68,25 @@ export const Comment = objectType({
           where: { parentId: parent.id },
         });
         return replies;
+      },
+    });
+    t.field("isVoted", {
+      type: "voteStatus",
+      async resolve(parent, _, context) {
+        if (!context.userId) return null;
+
+        const unique = await context.prisma.vote.findUnique({
+          where: {
+            userId_commentId: {
+              commentId: parent.id,
+              userId: context.userId,
+            },
+          },
+        });
+
+        console.log(unique);
+
+        return unique?.vote;
       },
     });
   },
@@ -203,14 +235,20 @@ export const upVote = extendType({
       },
       async resolve(_, args, context) {
         if (!context.userId) throw new Error("Please Login!");
+        console.log(context.userId);
 
         const comment = await context.prisma.comment.update({
           where: { id: args.commentId },
           data: {
             votes: {
               upsert: {
-                where: { userId: context.userId },
-                create: { vote: "UPVOTE" },
+                where: {
+                  userId_commentId: {
+                    commentId: args.commentId,
+                    userId: context.userId,
+                  },
+                },
+                create: { vote: "UPVOTE", userId: context.userId },
                 update: { vote: "UPVOTE" },
               },
             },
@@ -238,8 +276,13 @@ export const downVote = extendType({
           data: {
             votes: {
               upsert: {
-                where: { userId: context.userId },
-                create: { vote: "DOWNVOTE" },
+                where: {
+                  userId_commentId: {
+                    commentId: args.commentId,
+                    userId: context.userId,
+                  },
+                },
+                create: { vote: "DOWNVOTE", userId: context.userId },
                 update: { vote: "DOWNVOTE" },
               },
             },
@@ -266,7 +309,14 @@ export const removeVote = extendType({
         const comment = await context.prisma.comment.update({
           where: { id: args.commentId },
           data: {
-            votes: { delete: { userId: context.userId } },
+            votes: {
+              delete: {
+                userId_commentId: {
+                  userId: context.userId,
+                  commentId: args.commentId,
+                },
+              },
+            },
           },
         });
 
