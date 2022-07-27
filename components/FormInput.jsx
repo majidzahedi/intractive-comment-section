@@ -31,9 +31,9 @@ const REPLY = gql`
 export default function FormInput({
   user,
   setIsOpen,
-  isEditing,
+  edditing,
   comment,
-  setIsEditing,
+  toggleEdit,
   isReply,
   setIsReply,
 }) {
@@ -53,11 +53,11 @@ export default function FormInput({
     e.preventDefault();
     const inputValue = e.target[0].value;
     if (inputValue === "") return;
-    if (isEditing) {
+    if (edditing) {
       updateComment({
         variables: { commentId: comment.id, content: inputValue },
         onCompleted() {
-          setIsEditing(false);
+          toggleEdit();
         },
       });
     } else if (isReply) {
@@ -76,19 +76,41 @@ export default function FormInput({
     setIsOpen((prev) => !prev);
   }
 
+  if (edditing) {
+    return (
+      <form
+        className="flex w-full flex-col items-end justify-between space-x-0 space-y-2 rounded-xl bg-white  p-4 px-0 py-0 pt-1 md:items-start md:space-x-4 md:pt-2
+      "
+        onSubmit={handleSubmit}
+      >
+        <textarea
+          autoFocus
+          placeholder="Leave a Comment"
+          className="order-first h-24 w-full rounded-lg border border-lightGray px-3 py-2 scrollbar-hide md:order-none "
+          defaultValue={comment}
+        />
+        <button
+          type="submit"
+          className={`self-end rounded-lg bg-moderateBlue px-6 py-2 font-sans font-medium text-white hover:opacity-75 disabled:opacity-75 
+        `}
+        >
+          UPDATE
+        </button>
+      </form>
+    );
+  }
+
   return (
     <form
-      className={`flex w-full items-end justify-between rounded-xl bg-white p-4 pt-1 md:items-start md:space-x-4  md:pt-2 ${
-        isEditing
-          ? "flex-col items-end space-x-0 space-y-2 px-0 py-0"
-          : "sticky  flex-1 flex-wrap space-y-4 md:flex-none md:flex-nowrap md:space-x-4 md:space-y-0"
-      } `}
+      className={`sticky flex w-full flex-1 flex-wrap items-end justify-between space-y-4  rounded-xl  bg-white 
+          p-4  pt-1 shadow-md shadow-lightGrayishBlue md:flex-none md:flex-nowrap md:items-start md:space-x-4 md:space-y-0 md:pt-2
+       `}
       onSubmit={handleSubmit}
     >
-      {!isEditing && user?.name !== "Anonymous" && (
+      {user?.name !== "Anonymous" && (
         <img
           onClick={handleClick}
-          src={`/images/avatars/image-${user && user.name}.png`}
+          src={`/images/avatars/image-${user?.name}.png`}
           alt="profile"
           className="ml-2 w-10"
         />
@@ -102,19 +124,18 @@ export default function FormInput({
         </div>
       )}
       <textarea
+        autoFocus
         placeholder="Leave a Comment"
-        className="order-first h-24 w-full rounded-lg border border-lightGray px-3 py-2 scrollbar-hide md:order-none md:h-full"
-        defaultValue={isEditing ? comment.comment : ""}
+        className="order-first h-20 w-full rounded-lg border border-lightGray px-3 py-2 scrollbar-hide md:order-none "
         disabled={user?.name === "Anonymous"}
       />
       <button
         type="submit"
-        className={`rounded-lg bg-moderateBlue px-6 py-2 font-sans font-medium text-white hover:opacity-75 disabled:opacity-75 ${
-          isEditing && "self-end"
-        }`}
+        className={`rounded-lg bg-moderateBlue px-6 py-2 font-sans font-medium text-white hover:opacity-75 disabled:opacity-75 
+        `}
         disabled={user?.name === "Anonymous"}
       >
-        {isEditing ? "UPDATE" : isReply ? "REPLY" : "SEND"}
+        {isReply ? "REPLY" : "SEND"}
       </button>
     </form>
   );
