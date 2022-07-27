@@ -16,6 +16,38 @@ export const Comment = objectType({
         return user;
       },
     });
+    t.field("votes", {
+      type: nonNull("Int"),
+      async resolve(parent, _, context) {
+        const downVotes = await context.prisma.vote.count({
+          where: {
+            AND: [
+              {
+                vote: "DOWNVOTE",
+              },
+              {
+                commentId: parent.id,
+              },
+            ],
+          },
+        });
+
+        const upVotes = await context.prisma.vote.count({
+          where: {
+            AND: [
+              {
+                vote: "UPVOTE",
+              },
+              {
+                commentId: parent.id,
+              },
+            ],
+          },
+        });
+
+        return upVotes - downVotes;
+      },
+    });
     t.field("replies", {
       type: list("Comment"),
       async resolve(parent, _, context) {
@@ -156,6 +188,89 @@ export const deleteComment = extendType({
         });
 
         return deletedComment;
+      },
+    });
+  },
+});
+
+export const upVote = extendType({
+  type: "Mutation",
+  definition(t) {
+    t.field("upVote", {
+      type: "Comment",
+      args: {
+        commentId: nonNull(idArg()),
+      },
+      async resolve(_, args, context) {
+        if (!context.userId) throw new Error("Please Login!");
+
+        const comment = await context.prisma.comment.update({
+          where: { id: args.commentId },
+          data: {
+            votes: {
+              upsert: {
+                where: { userId: context.userId },
+                create: { vote: "UPVOTE" },
+                update: { vote: "UPVOTE" },
+              },
+            },
+          },
+        });
+        return comment;
+      },
+    });
+  },
+});
+
+export const downVote = extendType({
+  type: "Mutation",
+  definition(t) {
+    t.field("downVote", {
+      type: "Comment",
+      args: {
+        commentId: nonNull(idArg()),
+      },
+      async resolve(_, args, context) {
+        if (!context.userId) throw new Error("Please Login!");
+
+        const comment = await context.prisma.comment.update({
+          where: { id: args.commentId },
+          data: {
+            votes: {
+              upsert: {
+                where: { userId: context.userId },
+                create: { vote: "DOWNVOTE" },
+                update: { vote: "DOWNVOTE" },
+              },
+            },
+          },
+        });
+
+        return comment;
+      },
+    });
+  },
+});
+
+export const removeVote = extendType({
+  type: "Mutation",
+  definition(t) {
+    t.field("removeVote", {
+      type: "Comment",
+      args: {
+        commentId: nonNull(idArg()),
+      },
+      async resolve(_, args, context) {
+        if (!context.userId) throw new Error("Please Login!");
+
+        const comment = await context.prisma.comment.update({
+          where: { id: args.commentId },
+          data: {
+            votes: { delete: { userId: context.userId } },
+          },
+        });
+
+        return comment;
       },
     });
   },
