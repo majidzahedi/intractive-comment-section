@@ -11,6 +11,30 @@ const DELETE = gql`
   }
 `;
 
+const UPVOTE = gql`
+  mutation UpVote($commentId: ID!) {
+    upVote(commentId: $commentId) {
+      votes
+    }
+  }
+`;
+
+const DOWNVOTE = gql`
+  mutation DownVote($commentId: ID!) {
+    downVote(commentId: $commentId) {
+      votes
+    }
+  }
+`;
+
+const REMOVEVOTE = gql`
+  mutation RemoveVote($commentId: ID!) {
+    removeVote(commentId: $commentId) {
+      votes
+    }
+  }
+`;
+
 export default function Comment({ comment, user }) {
   const [isEditing, setIsEditing] = useState(false);
   const [isReply, setIsReply] = useState(false);
@@ -27,7 +51,7 @@ export default function Comment({ comment, user }) {
     <>
       <div className="flex w-full flex-col-reverse items-start space-y-0 rounded-lg bg-white p-4 md:flex-row md:space-x-4">
         <div className="mt-2 flex w-full justify-between md:mt-0 md:w-auto">
-          <Rate />
+          <Rate comment={comment} user={user} />
           <Crud
             visability="flex md:hidden"
             isEditing={isEditing}
@@ -159,12 +183,49 @@ const Crud = ({
   </div>
 );
 
-const Rate = () => {
+const Rate = ({ comment, user }) => {
+  const [upVote] = useMutation(UPVOTE);
+  const [downVote] = useMutation(DOWNVOTE);
+  const [removeVote] = useMutation(REMOVEVOTE);
+
+  function handleUpVote() {
+    upVote({
+      variables: { commentId: comment.id },
+      refetchQueries: ["comments"],
+    });
+  }
+
+  function handleDownVote() {
+    downVote({
+      variables: { commentId: comment.id },
+      refetchQueries: ["comments"],
+    });
+  }
+
+  function handleRemoveVote() {
+    removeVote({
+      variables: { commentId: comment.id },
+      refetchQueries: ["comments"],
+    });
+  }
+
   return (
     <div className="flex items-center justify-center space-x-3 rounded-lg bg-veryLightGray py-2 px-4  md:flex-col md:space-y-1 md:space-x-0 md:p-4">
-      <button className="font-bold text-grayishBlue ">+</button>
-      <span className="font-bold text-moderateBlue">4</span>
-      <button className="font-bold text-grayishBlue">-</button>
+      <button
+        className="font-bold text-grayishBlue "
+        onClick={!!comment.isVoted ? handleRemoveVote : handleUpVote}
+        disabled={comment.user.id === user?.id}
+      >
+        {!!comment.isVoted ? "0" : "+"}
+      </button>
+      <span className="font-bold text-moderateBlue">{comment.votes}</span>
+      <button
+        className="font-bold text-grayishBlue"
+        onClick={!!comment.isVoted ? handleRemoveVote : handleDownVote}
+        disabled={comment.user.id === user?.id}
+      >
+        {!!comment.isVoted ? "0" : "-"}
+      </button>
     </div>
   );
 };

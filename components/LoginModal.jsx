@@ -23,11 +23,12 @@ export default function LoginModal({ setIsOpen }) {
     };
     login({
       variables: payload,
-      async onCompleted(data) {
-        const token = await data.logIn.token;
+      onCompleted(data) {
+        const token = data.logIn.token;
         localStorage.setItem("token", token);
         setIsOpen(false);
       },
+      refetchQueries: ["comments"],
       update(cashe, { data: { logIn } }) {
         cashe.modify({
           fields: {

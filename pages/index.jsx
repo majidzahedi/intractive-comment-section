@@ -12,21 +12,30 @@ const COMMENTS = gql`
       id
       comment
       createdAt
+      votes
+      isVoted
       user {
+        id
         name
       }
       replies {
         id
         comment
         createdAt
+        votes
+        isVoted
         user {
+          id
           name
         }
         replies {
           id
           comment
           createdAt
+          votes
+          isVoted
           user {
+            id
             name
           }
         }
