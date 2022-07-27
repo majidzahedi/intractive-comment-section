@@ -84,8 +84,6 @@ export const Comment = objectType({
           },
         });
 
-        console.log(unique);
-
         return unique?.vote;
       },
     });

@@ -1,7 +1,7 @@
 import FormInput from "../FormInput";
 
 export const CommentField = ({ edditing, commentContent, setIsEditing }) => {
-  return isEditing ? (
+  return edditing ? (
     <FormInput
       comment={commentContent}
       edditing={edditing}
