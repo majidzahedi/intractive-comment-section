@@ -20,7 +20,7 @@ model User {
   updatedAt DateTime  @updatedAt
 
   password Password?
-  Vote     Vote[]
+  votes    Vote[]
 }
 
 model Password {
@@ -34,7 +34,7 @@ model Comment {
   id      String @id @default(cuid())
   comment String
 
-  Children Comment[] @relation("Comment_Children")
+  children Comment[] @relation("Comment_Children")
   parent   Comment?  @relation("Comment_Children", fields: [parentId], references: [id], onDelete: Cascade)
   parentId String?
 
@@ -43,13 +43,13 @@ model Comment {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  User   User?   @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  user   User?   @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   userId String?
 }
 
 model Vote {
-  id   String    @id @default(cuid())
-  vote VoteStat?
+  // id   String    @id @default(cuid())
+  vote VoteStat
 
   user   User?  @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   userId String

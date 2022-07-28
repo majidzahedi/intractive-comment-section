@@ -6,7 +6,13 @@ import {
   nonNull,
   idArg,
   enumType,
+  nullable,
+  asNexusMethod,
 } from "nexus";
+
+import { DateTimeResolver } from "graphql-scalars";
+
+export const GQLDate = asNexusMethod(DateTimeResolver, "dateTime");
 
 export const voteStatus = enumType({
   name: "voteStatus",
@@ -61,24 +67,15 @@ export const Comment = objectType({
         return upVotes - downVotes;
       },
     });
-    t.field("replies", {
-      type: list("Comment"),
-      async resolve(parent, _, context) {
-        const replies = await context.prisma.comment.findMany({
-          where: { parentId: parent.id },
-        });
-        return replies;
-      },
-    });
     t.field("isVoted", {
-      type: "voteStatus",
-      async resolve(parent, _, context) {
+      type: nullable("voteStatus"),
+      async resolve({ id }, _, context) {
         if (!context.userId) return null;
 
         const unique = await context.prisma.vote.findUnique({
           where: {
             userId_commentId: {
-              commentId: parent.id,
+              commentId: id,
               userId: context.userId,
             },
           },
@@ -90,11 +87,26 @@ export const Comment = objectType({
   },
 });
 
+export const replies = extendType({
+  type: "Comment",
+  definition(t) {
+    t.field("replies", {
+      type: nonNull(list("Comment")),
+      async resolve(parent, _, context) {
+        const replies = await context.prisma.comment.findMany({
+          where: { parentId: parent.id },
+        });
+        return replies;
+      },
+    });
+  },
+});
+
 export const comments = extendType({
   type: "Query",
   definition(t) {
     t.field("comments", {
-      type: list("Comment"),
+      type: nonNull(list("Comment")),
       async resolve(_, __, context) {
         const comments = await context.prisma.comment.findMany({
           where: { parentId: null },
@@ -140,7 +152,7 @@ export const createReply = extendType({
         const alreadyCommented = await context.prisma.comment.findFirst({
           where: {
             AND: [
-              { Children: { some: { userId: context.userId } } },
+              { children: { some: { userId: context.userId } } },
               { id: args.commentId },
             ],
           },
@@ -297,14 +309,14 @@ export const removeVote = extendType({
   type: "Mutation",
   definition(t) {
     t.field("removeVote", {
-      type: "Comment",
+      type: nullable("Comment"),
       args: {
         commentId: nonNull(idArg()),
       },
       async resolve(_, args, context) {
         if (!context.userId) throw new Error("Please Login!");
 
-        const comment = await context.prisma.comment.update({
+        return await context.prisma.comment.update({
           where: { id: args.commentId },
           data: {
             votes: {
@@ -317,8 +329,6 @@ export const removeVote = extendType({
             },
           },
         });
-
-        return comment;
       },
     });
   },
