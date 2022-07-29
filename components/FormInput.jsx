@@ -57,7 +57,7 @@ export default function FormInput({
 
   function handleSubmit(e) {
     e.preventDefault();
-    const inputValue = e.target[0].value;
+    const inputValue = e.target[0].value.trim();
     if (inputValue === "") return;
     if (edditing) {
       updateComment({
@@ -74,7 +74,12 @@ export default function FormInput({
         },
       });
     } else {
-      createComment({ variables: { comment: inputValue } });
+      createComment({
+        variables: { comment: inputValue },
+        onCompleted() {
+          e.target[0].value = "";
+        },
+      });
     }
   }
 
@@ -112,9 +117,8 @@ export default function FormInput({
 
   return (
     <form
-      className={`sticky flex w-full flex-1 flex-wrap items-end justify-between space-y-4  rounded-xl  bg-white 
-          p-4  pt-1 shadow-md shadow-lightGrayishBlue md:flex-none md:flex-nowrap md:items-start md:space-x-4 md:space-y-0 md:pt-2
-       `}
+      className="flex w-full  flex-wrap items-end justify-between space-y-4  rounded-xl  bg-white p-4  pt-1 shadow-sm shadow-lightGrayishBlue md:flex-none md:flex-nowrap md:items-start md:space-x-4 md:space-y-0 md:pt-2
+       "
       onSubmit={handleSubmit}
     >
       {user?.name !== "Anonymous" && (

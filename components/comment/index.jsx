@@ -1,10 +1,10 @@
 import FormInput from "../FormInput";
-import { useState } from "react";
 import { UserSummery } from "./UserSummery";
 import { Crud } from "./Crud";
 import { Rate } from "./Rate";
 import { CommentField } from "./CommentField";
 import { Replies } from "./Replies";
+import { useState } from "react";
 
 export default function Comment({ comment, user }) {
   const [settings, setSettings] = useState({
@@ -49,7 +49,7 @@ export default function Comment({ comment, user }) {
           <UserSummery
             isCommentOwner={comment.user.id === user?.id}
             commentUserName={comment.user.name}
-            createdAt={+comment.createdAt}
+            createdAt={comment.createdAt}
           >
             <Crud
               commentId={comment.id}

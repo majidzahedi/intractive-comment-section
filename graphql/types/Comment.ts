@@ -10,9 +10,9 @@ import {
   asNexusMethod,
 } from "nexus";
 
-import { DateTimeResolver } from "graphql-scalars";
+import { GraphQLDateTime } from "graphql-scalars";
 
-export const GQLDate = asNexusMethod(DateTimeResolver, "dateTime");
+export const GQLDate = asNexusMethod(GraphQLDateTime, "dateTime");
 
 export const voteStatus = enumType({
   name: "voteStatus",
@@ -24,7 +24,7 @@ export const Comment = objectType({
   definition(t) {
     t.nonNull.id("id");
     t.nonNull.string("comment");
-    t.nonNull.string("createdAt");
+    t.nonNull.dateTime("createdAt");
     t.field("user", {
       type: "User",
       async resolve(parent, __, context) {
@@ -68,14 +68,14 @@ export const Comment = objectType({
       },
     });
     t.field("isVoted", {
-      type: nullable("voteStatus"),
-      async resolve({ id }, _, context) {
+      type: voteStatus,
+      async resolve(parent, _, context) {
         if (!context.userId) return null;
 
         const unique = await context.prisma.vote.findUnique({
           where: {
             userId_commentId: {
-              commentId: id,
+              commentId: parent.id,
               userId: context.userId,
             },
           },
@@ -245,7 +245,6 @@ export const upVote = extendType({
       },
       async resolve(_, args, context) {
         if (!context.userId) throw new Error("Please Login!");
-        console.log(context.userId);
 
         const comment = await context.prisma.comment.update({
           where: { id: args.commentId },
