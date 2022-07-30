@@ -8,9 +8,38 @@ import {
   enumType,
   nullable,
   asNexusMethod,
+  intArg,
 } from "nexus";
 
 import { GraphQLDateTime } from "graphql-scalars";
+
+export const Edge = objectType({
+  name: "Edge",
+  definition(t) {
+    t.string("cursor");
+    t.field("node", {
+      type: Comment,
+    });
+  },
+});
+
+export const PageInfo = objectType({
+  name: "PageInfo",
+  definition(t) {
+    t.string("endCursor");
+    t.boolean("hasNextPage");
+  },
+});
+
+export const Response = objectType({
+  name: "Response",
+  definition(t) {
+    t.field("pageInfo", { type: PageInfo });
+    t.list.field("edges", {
+      type: Edge,
+    });
+  },
+});
 
 export const GQLDate = asNexusMethod(GraphQLDateTime, "dateTime");
 
@@ -106,13 +135,78 @@ export const comments = extendType({
   type: "Query",
   definition(t) {
     t.field("comments", {
-      type: nonNull(list("Comment")),
-      async resolve(_, __, context) {
-        const comments = await context.prisma.comment.findMany({
-          where: { parentId: null },
-          orderBy: { createdAt: "asc" },
-        });
-        return comments;
+      type: "Response",
+      args: {
+        first: nonNull(intArg({ default: 10 })),
+        after: stringArg(),
+      },
+      async resolve(_, args, context) {
+        let queryResult = null;
+
+        if (args.after) {
+          queryResult = await context.prisma.comment.findMany({
+            take: -args.first,
+            skip: 1,
+            cursor: {
+              id: args.after,
+            },
+            where: {
+              parentId: null,
+            },
+            orderBy: { createdAt: "asc" },
+          });
+        } else {
+          queryResult = await context.prisma.comment.findMany({
+            where: {
+              parentId: null,
+            },
+            orderBy: { createdAt: "asc" },
+            take: -args.first,
+          });
+        }
+
+        if (queryResult.length > 0) {
+          const lastCommentInResult = queryResult[0];
+          const myCursor = lastCommentInResult.id;
+
+          const secondQueryResults = await context.prisma.comment.findMany({
+            take: -args.first,
+            cursor: {
+              id: myCursor,
+            },
+            where: {
+              parentId: null,
+            },
+            orderBy: {
+              createdAt: "asc",
+            },
+          });
+
+          const result = {
+            pageInfo: {
+              endCursor: myCursor,
+              hasNextPage: secondQueryResults.length >= args.first,
+            },
+            edges: queryResult.map((comment) => ({
+              cursor: comment.id,
+              node: comment,
+            })),
+          };
+
+          return result;
+        }
+        // const comments = await context.prisma.comment.findMany({
+        //   where: { parentId: null },
+        //   orderBy: { createdAt: "asc" },
+        // });
+        // return comments;
+        return {
+          pageInfo: {
+            endCursor: null,
+            hasNextPage: false,
+          },
+          edges: [],
+        };
       },
     });
   },
