@@ -1,55 +1,19 @@
-import { useQuery, gql } from "@apollo/client";
-import { useState } from "react";
+import { gql, useMutation } from "@apollo/client";
+import { useState, useEffect } from "react";
 
 import FormInput from "../components/FormInput";
 import CommnetsList from "../components/CommnetsList";
-import LoginModal from "../components/LoginModal";
 import Head from "next/head";
 
-const COMMENTS = gql`
-  query comments {
-    comments {
-      id
-      comment
-      createdAt
-      votes
-      isVoted
+const LOGIN = gql`
+  mutation LogIn($email: String!, $password: String!) {
+    logIn(email: $email, password: $password) {
+      token
       user {
         id
+        email
         name
       }
-      replies {
-        id
-        comment
-        createdAt
-        votes
-        isVoted
-        user {
-          id
-          name
-        }
-        replies {
-          id
-          comment
-          createdAt
-          votes
-          isVoted
-          user {
-            id
-            name
-          }
-        }
-      }
-    }
-  }
-`;
-
-const USER = gql`
-  query User {
-    user {
-      id
-      name
-      email
     }
   }
 `;
@@ -61,24 +25,37 @@ const anonymousUser = {
 };
 
 export default () => {
-  const [isOpen, setIsOpen] = useState(false);
-  const { data, loading, error } = useQuery(COMMENTS);
-  const { data: userData } = useQuery(USER);
+  const [login] = useMutation(LOGIN);
+  const [user, setUser] = useState({
+    name: "juliusomo",
+  });
 
-  const { comments } = !!data && data;
-  const { user } = !!userData ? userData : anonymousUser;
+  useEffect(() => {
+    login({
+      variables: {
+        email: "juliusomo@email.com",
+        password: "admin",
+      },
+      onCompleted: ({ logIn }) => {
+        localStorage.setItem("token", logIn.token);
+        setUser({
+          id: logIn.user.id,
+          name: logIn.user.name,
+        });
+      },
+    });
+  }, []);
 
   return (
-    <div className="conteiner min-h-screen bg-veryLightGray">
+    <div className="conteiner relative min-h-screen bg-veryLightGray">
       <Head>
         <title>Comment Section</title>
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
         <link rel="shortcut icon" href="/images/favicon.png" />
       </Head>
-      {isOpen && <LoginModal setIsOpen={setIsOpen} />}
-      <div className="mx-auto flex min-h-screen w-full max-w-3xl flex-col-reverse items-center justify-start space-y-1 py-5 px-4 md:px-0">
-        <FormInput user={user} setIsOpen={setIsOpen} />
-        <CommnetsList user={user} comments={comments} />
+      <div className="relative mx-auto flex min-h-screen w-full max-w-3xl flex-col-reverse items-center justify-start space-y-1 py-5 px-4 md:px-0">
+        <FormInput user={user} />
+        <CommnetsList user={user} />
       </div>
     </div>
   );
