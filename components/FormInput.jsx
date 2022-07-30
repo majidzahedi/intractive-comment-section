@@ -102,14 +102,12 @@ export default function FormInput({
         />
         <button
           type="submit"
-          className="flex space-x-1 self-end rounded-lg bg-moderateBlue px-6 py-2 font-sans font-medium text-white hover:opacity-75 disabled:opacity-75"
+          className={`flex space-x-1 self-end rounded-lg bg-moderateBlue px-6 py-2 font-sans font-medium text-white hover:opacity-75 disabled:opacity-95 ${
+            updateLoading ? "animate-pulse" : ""
+          }`}
+          disabled={user?.name === "Anonymous" || updateLoading}
         >
-          <span>
-            {updateLoading && (
-              <div className="flex h-5 w-5 animate-spin rounded-full border-4 border-t-moderateBlue "></div>
-            )}
-          </span>
-          <span>UPDATE</span>
+          UPDATE
         </button>
       </form>
     );
@@ -145,17 +143,12 @@ export default function FormInput({
       />
       <button
         type="submit"
-        className="flex space-x-1 rounded-lg bg-moderateBlue px-6 py-2 font-sans font-medium text-white hover:opacity-75 disabled:opacity-75
-        "
-        disabled={user?.name === "Anonymous"}
+        className={`flex space-x-1 rounded-lg bg-moderateBlue px-6 py-2 font-sans font-medium text-white hover:opacity-75 disabled:opacity-95 ${
+          createLoading || replyLoading ? "animate-pulse" : ""
+        }`}
+        disabled={user?.name === "Anonymous" || createLoading || replyLoading}
       >
-        <span>
-          {createLoading ||
-            (replyLoading && (
-              <div className="flex h-5 w-5 animate-spin rounded-full border-4 border-t-moderateBlue "></div>
-            ))}
-        </span>
-        <span>{isReply ? "REPLY" : "SEND"}</span>
+        {isReply ? "REPLY" : "SEND"}
       </button>
     </form>
   );

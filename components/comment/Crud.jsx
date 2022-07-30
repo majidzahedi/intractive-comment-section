@@ -17,7 +17,7 @@ export const Crud = ({
   toggleReply,
   visability = "hidden md:flex",
 }) => {
-  const [deleteComment] = useMutation(DELETE);
+  const [deleteComment, { loading }] = useMutation(DELETE);
 
   function handleDelete() {
     deleteComment({
@@ -29,10 +29,11 @@ export const Crud = ({
   return (
     <div className={`${visability} space-x-5`}>
       <button
-        className={`flex items-center space-x-1 font-medium text-softRed hover:opacity-70 ${
+        className={`flex items-center space-x-1 font-medium text-softRed hover:opacity-70 disabled:opacity-90 ${
           !isCommentOwner && "hidden"
-        }`}
+        } ${loading ? "animate-pulse" : ""}`}
         onClick={handleDelete}
+        disabled={loading}
       >
         <img src="/images/icon-delete.svg" alt="" />
         <p>Delete</p>
