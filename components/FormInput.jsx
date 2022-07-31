@@ -40,19 +40,19 @@ export default function FormInput({
   const [createComment, { loading: createLoading }] = useMutation(
     CREATE_COMMENT,
     {
-      refetchQueries: ["comments"],
+      refetchQueries: ["Comments"],
     }
   );
 
   const [updateComment, { loading: updateLoading }] = useMutation(
     UPDATE_COMMENT,
     {
-      refetchQueries: ["comments"],
+      refetchQueries: ["Comments"],
     }
   );
 
   const [replyOnComment, { loading: replyLoading }] = useMutation(REPLY, {
-    refetchQueries: ["comments"],
+    refetchQueries: ["Comments"],
   });
 
   function handleSubmit(e) {

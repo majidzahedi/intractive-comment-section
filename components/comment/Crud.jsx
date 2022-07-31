@@ -22,7 +22,8 @@ export const Crud = ({
   function handleDelete() {
     deleteComment({
       variables: { commentId },
-      refetchQueries: ["comments"],
+      refetchQueries: ["Comments"],
+      onCompleted: () => {},
     });
   }
 

@@ -51,16 +51,22 @@ const COMMENTS = gql`
 
 export default function CommnetsList({ user }) {
   const { data, loading, error, fetchMore } = useQuery(COMMENTS, {
-    variables: { first: 10 },
+    variables: { first: 5 },
   });
 
   const bottomRef = useRef(null);
+  const currentRef = useRef(null);
 
   const { comments } = !!data && data;
   useEffect(() => {
     // 👇️ scroll to bottom every time messages change
-    bottomRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, []);
+    if (comments?.length < 10) {
+      console.log("currnet");
+      currentRef.current?.scrollIntoView({ behavior: "smooth" });
+    } else {
+      bottomRef.current?.scrollIntoView({ behavior: "smooth" });
+    }
+  }, [comments]);
 
   if (loading) {
     return (
@@ -95,6 +101,7 @@ export default function CommnetsList({ user }) {
           You've Reached the end!
         </p>
       )}
+      <div ref={currentRef} />
       {comments?.edges.map(({ node: comment }, index) => (
         <Comment
           key={comment.id}
