@@ -26,8 +26,8 @@ export const Edge = objectType({
 export const PageInfo = objectType({
   name: "PageInfo",
   definition(t) {
-    t.string("endCursor");
-    t.boolean("hasNextPage");
+    t.string("startCursor");
+    t.boolean("hasPreviousPage");
   },
 });
 
@@ -137,23 +137,23 @@ export const comments = extendType({
     t.field("comments", {
       type: "Response",
       args: {
-        first: nonNull(intArg({ default: 10 })),
-        after: stringArg(),
+        last: nonNull(intArg({ default: 10 })),
+        before: stringArg(),
       },
       async resolve(_, args, context) {
         let queryResult = null;
 
-        if (args.after) {
+        if (args.before) {
           queryResult = await context.prisma.comment.findMany({
-            take: -args.first,
-            skip: 1,
-            cursor: {
-              id: args.after,
-            },
             where: {
               parentId: null,
             },
             orderBy: { createdAt: "asc" },
+            take: -args.last,
+            skip: 1,
+            cursor: {
+              id: args.before,
+            },
           });
         } else {
           queryResult = await context.prisma.comment.findMany({
@@ -161,31 +161,32 @@ export const comments = extendType({
               parentId: null,
             },
             orderBy: { createdAt: "asc" },
-            take: -args.first,
+            take: -args.last,
           });
         }
 
         if (queryResult.length > 0) {
-          const lastCommentInResult = queryResult[0];
-          const myCursor = lastCommentInResult.id;
+          const firstCommentInResult = queryResult[0];
+          const myCursor = firstCommentInResult.id;
 
           const secondQueryResults = await context.prisma.comment.findMany({
-            take: -args.first,
-            cursor: {
-              id: myCursor,
-            },
             where: {
               parentId: null,
             },
             orderBy: {
               createdAt: "asc",
             },
+            take: -args.last,
+            cursor: {
+              id: myCursor,
+            },
+            skip: 1,
           });
 
           const result = {
             pageInfo: {
-              endCursor: myCursor,
-              hasNextPage: secondQueryResults.length >= args.first,
+              startCursor: myCursor,
+              hasPreviousPage: secondQueryResults.length > 0,
             },
             edges: queryResult.map((comment) => ({
               cursor: comment.id,
@@ -195,15 +196,11 @@ export const comments = extendType({
 
           return result;
         }
-        // const comments = await context.prisma.comment.findMany({
-        //   where: { parentId: null },
-        //   orderBy: { createdAt: "asc" },
-        // });
-        // return comments;
+
         return {
           pageInfo: {
-            endCursor: null,
-            hasNextPage: false,
+            startCursor: null,
+            hasPreviousPage: false,
           },
           edges: [],
         };
