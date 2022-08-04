@@ -7,13 +7,13 @@
 
 @keyframes slideInFromLeft {
   0% {
-    transform: translateY(-1%) scale(97%);
+    transform:  scale(98%);
   }
   100% {
-    transform: translateY(0) scale((100%));
+    transform: scale((100%));
   }
 }
 
 .element {
-   animation: 0.5s ease-out 0s 0.5 slideInFromLeft;
+   animation: 1s ease-out 0s 1 slideInFromLeft;
 }

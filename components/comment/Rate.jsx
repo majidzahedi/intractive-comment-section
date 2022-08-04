@@ -32,21 +32,21 @@ export const Rate = ({ vote, commentId, isCommentOwner, isUserVoted }) => {
   function handleUpVote() {
     upVote({
       variables: { commentId },
-      refetchQueries: ["comments"],
+      refetchQueries: ["Comments"],
     });
   }
 
   function handleDownVote() {
     downVote({
       variables: { commentId },
-      refetchQueries: ["comments"],
+      refetchQueries: ["Comments"],
     });
   }
 
   function handleRemoveVote() {
     removeVote({
       variables: { commentId },
-      refetchQueries: ["comments"],
+      refetchQueries: ["Comments"],
     });
   }
 

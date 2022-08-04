@@ -3,11 +3,11 @@ import { useQuery, gql } from "@apollo/client";
 import Comment from "./comment";
 
 const COMMENTS = gql`
-  query Comments($first: Int, $after: String) {
-    comments(first: $first, after: $after) {
+  query Comments($last: Int, $before: String) {
+    comments(last: $last, before: $before) {
       pageInfo {
-        endCursor
-        hasNextPage
+        startCursor
+        hasPreviousPage
       }
       edges {
         cursor
@@ -51,7 +51,7 @@ const COMMENTS = gql`
 
 export default function CommnetsList({ user }) {
   const { data, loading, error, fetchMore } = useQuery(COMMENTS, {
-    variables: { first: 5 },
+    variables: { last: 5 },
   });
 
   const bottomRef = useRef(null);
@@ -59,8 +59,11 @@ export default function CommnetsList({ user }) {
 
   const { comments } = !!data && data;
   useEffect(() => {
-    // 👇️ scroll to bottom every time messages change
-    if (comments?.length < 10) {
+    bottomRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, []);
+
+  useEffect(() => {
+    if (comments?.edges?.length > 5) {
       console.log("currnet");
       currentRef.current?.scrollIntoView({ behavior: "smooth" });
     } else {
@@ -74,16 +77,17 @@ export default function CommnetsList({ user }) {
     );
   }
 
-  const { endCursor, hasNextPage } = data.comments.pageInfo;
+  const { startCursor, hasPreviousPage } = data.comments.pageInfo;
 
   return (
     <div className="flex max-h-[75vh] w-full flex-col   space-y-1 overflow-y-scroll py-2 scrollbar-hide md:max-h-[83vh]">
-      {hasNextPage ? (
+      <div ref={currentRef} />
+      {hasPreviousPage ? (
         <button
           className="mb-3 flex space-x-1 self-center rounded-lg bg-moderateBlue px-6 py-2 font-sans font-medium text-white hover:opacity-75 disabled:opacity-95"
           onClick={() => {
             fetchMore({
-              variables: { after: endCursor },
+              variables: { before: startCursor },
               updateQuery: (prevResult, { fetchMoreResult }) => {
                 fetchMoreResult.comments.edges = [
                   ...fetchMoreResult.comments.edges,
@@ -101,10 +105,9 @@ export default function CommnetsList({ user }) {
           You've Reached the end!
         </p>
       )}
-      <div ref={currentRef} />
-      {comments?.edges.map(({ node: comment }, index) => (
+      {comments?.edges.map(({ node: comment, cursor }, index) => (
         <Comment
-          key={comment.id}
+          key={cursor}
           comment={comment}
           user={user}
           isLast={comments.length === index + 1}
