@@ -1,4 +1,7 @@
 import { gql, useMutation } from "@apollo/client";
+import DeleteIcon from "../../public/images/icon-delete.svg";
+import EditIcon from "../../public/images/icon-edit.svg";
+import ReplyIcon from "../../public/images/icon-reply.svg";
 
 const DELETE = gql`
   mutation DeleteComment($commentId: ID!) {
@@ -28,29 +31,31 @@ export const Crud = ({
   }
 
   return (
-    <div className={`${visability} space-x-5`}>
+    <div className={`${visability} space-x-5 rtl:space-x-reverse  `}>
       <button
-        className={`flex items-center space-x-1 font-medium text-softRed hover:opacity-70 disabled:opacity-90 ${
+        className={`text-softRed flex items-center space-x-1 font-medium hover:opacity-70 disabled:opacity-90 rtl:flex-row-reverse  ${
           !isCommentOwner && "hidden"
         } ${loading ? "animate-pulse" : ""}`}
         onClick={handleDelete}
         disabled={loading}
       >
-        <img src="/images/icon-delete.svg" alt="" />
-        <p>Delete</p>
+        <DeleteIcon className="text-latteMarron dark:text-mochaMarron" />
+        <p className="text-latteMarron dark:text-mochaMarron">حذف</p>
       </button>
       <button
-        className={`flex items-center space-x-1 font-medium text-moderateBlue hover:opacity-70 ${
+        className={`text-moderateBlue flex items-center space-x-1 font-medium hover:opacity-70  rtl:flex-row-reverse  ${
           !isCommentOwner && "hidden"
         }`}
         onClick={toggleEdit}
       >
-        <img src="/images/icon-edit.svg" alt="" />
-        <span>{settings.isEditing ? "CANCEL" : "EDIT"}</span>
+        <EditIcon className="text-latteSapphire dark:text-mochaSapphire" />
+        <span className="text-latteSapphire dark:text-mochaSapphire">
+          {settings.isEditing ? "لغو" : "خروج"}
+        </span>
       </button>
       <button
         disabled={isAnonymous}
-        className={`flex items-center space-x-1 font-medium text-moderateBlue hover:opacity-70 disabled:opacity-70 ${
+        className={`text-moderateBlue flex items-center space-x-1 font-medium hover:opacity-70 disabled:opacity-70 rtl:flex-row-reverse  ${
           isCommentOwner && "hidden"
         }`}
         onClick={(e) => {
@@ -58,8 +63,10 @@ export const Crud = ({
           toggleReply();
         }}
       >
-        <img src="/images/icon-reply.svg" alt="" />
-        <span>{settings.isReply ? "CANCEL" : "REPLY"}</span>
+        <ReplyIcon className="text-latteSapphire dark:text-mochaSapphire" />
+        <span className="text-latteSapphire dark:text-mochaSapphire">
+          {settings.isReply ? "لغو" : "پاسخ"}
+        </span>
       </button>
     </div>
   );

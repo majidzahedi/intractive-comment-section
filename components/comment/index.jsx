@@ -27,7 +27,7 @@ export default function Comment({ comment, user, isLast }) {
 
   return (
     <>
-      <div className="element flex w-full flex-col-reverse items-start  space-y-0 rounded-lg bg-white p-4 shadow-sm shadow-lightGrayishBlue md:flex-row md:space-x-4">
+      <div className="element shadow-lightGrayishBlue flex w-full flex-col-reverse  items-start space-y-0 rounded-lg bg-white p-4 shadow-sm rtl:space-x-reverse dark:bg-mochaBase md:flex-row md:space-x-4">
         <div className="mt-2 flex w-full justify-between md:mt-0 md:w-auto">
           <Rate
             commentId={comment.id}

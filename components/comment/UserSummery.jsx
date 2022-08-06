@@ -1,4 +1,5 @@
 import moment from "moment";
+import "moment/locale/fa";
 
 export const UserSummery = ({
   isCommentOwner,
@@ -8,20 +9,22 @@ export const UserSummery = ({
 }) => {
   return (
     <div className="flex items-center justify-between">
-      <div className="flex items-center space-x-3">
+      <div className="flex items-center space-x-3 rtl:space-x-reverse">
         <img
           src={`/images/avatars/image-${commentUserName}.png`}
           alt=""
           className="w-7"
         />
-        <p className="text-sm font-medium text-darkBlue">{commentUserName}</p>
+        <p className="text-sm font-medium text-latteText dark:text-mochaText">
+          {commentUserName}
+        </p>
         <p
           hidden={!isCommentOwner}
-          className="rounded-sm bg-moderateBlue px-1 text-xs font-medium text-white"
+          className="rounded-sm bg-latteSapphire px-1 text-xs font-medium text-white"
         >
-          you
+          شما
         </p>
-        <p className="text-sm text-lightGrayishBlue">
+        <p className="text-sm text-latteSubText0 dark:text-mochaSubText0">
           {moment(createdAt).fromNow()}
         </p>
       </div>
