@@ -22,7 +22,7 @@ const main = async () => {
       comments: {
         create: {
           comment:
-            "Impressive! Though it seems the drag feature could be improved. But overall it looks incredible. You've nailed the design and the responsiveness at various breakpoints works really well.",
+            "چشمگیر! اگرچه به نظر می رسد ویژگی کشیدن می تواند بهبود یابد. اما در کل باور نکردنی به نظر می رسد. شما طراحی را ثابت کرده اید و پاسخگویی در نقاط شکست مختلف واقعاً خوب عمل می کند.",
         },
       },
     },
@@ -36,11 +36,11 @@ const main = async () => {
       comments: {
         create: {
           comment:
-            "Woah, your project looks awesome! How long have you been coding for? I'm still new, but think I want to dive into React as well soon. Perhaps you can give me an insight on where I can learn React? Thanks!",
+            "وای، پروژه شما عالی به نظر می رسد! چند وقته که کدنویسی میکنی؟ من هنوز تازه کار هستم، اما فکر می کنم می خواهم به زودی وارد React نیز شوم. شاید بتوانید اطلاعاتی در مورد اینکه کجا می توانم React را یاد بگیرم به من بدهید؟ با تشکر!",
           children: {
             create: {
               comment:
-                "If you're still new, I'd recommend focusing on the fundamentals of HTML, CSS, and JS before considering React. It's very tempting to jump ahead but lay a solid foundation first.",
+                "اگر هنوز تازه کار هستید، توصیه می‌کنم قبل از بررسی React روی اصول HTML، CSS و JS تمرکز کنید. این بسیار وسوسه انگیز است که به جلو بپرید اما ابتدا یک پایه محکم بگذارید.",
               user: {
                 create: {
                   name: "ramsesmiron",
