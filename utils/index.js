@@ -1,20 +1,34 @@
-import { useState, useEffect } from "react";
+import create from "zustand";
+import { persist, subscribeWithSelector } from "zustand/middleware";
 
-const useDarkMode = () => {
-  const [isDarkMode, setDarkMode] = useState(false);
+export const useStore = create(
+  subscribeWithSelector(
+    persist(
+      (set) => ({
+        darkMode: false,
+        toggleDarkMode: () => {
+          set((state) => {
+            state.darkMode = !state.darkMode;
+          });
+        },
+      }),
+      {
+        name: "settings",
+        getStorage: () => sessionStorage,
+      }
+    )
+  )
+);
 
-  useEffect(() => {
-    const initialValue = localStorage.getItem("colorMode") && false;
-    setDarkMode(initialValue);
-  }, []);
-  useEffect(() => {
-    localStorage.setItem("colorMode", JSON.stringify(isDarkMode));
-    document.body.setAttribute("class", isDarkMode ? "dark" : "");
-  }, [isDarkMode]);
-
-  const toggleDarkMode = () => setDarkMode((prev) => !prev);
-
-  return { isDarkMode, toggleDarkMode };
-};
-
-export default useDarkMode;
+useStore.subscribe(
+  (state) => state.darkMode,
+  (state) => {
+    if (typeof window !== "undefined") {
+      // Perform localStorage action
+      document
+        .querySelector("body")
+        .setAttribute("class", state ? "dark" : "light");
+    }
+  },
+  { fireImmediately: true }
+);

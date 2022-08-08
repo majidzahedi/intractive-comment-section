@@ -1,8 +1,4 @@
 import { gql, useMutation } from "@apollo/client";
-import useDarkMode from "../utils/index";
-import { Switch } from "@headlessui/react";
-import { clsx } from "clsx";
-import Modal from "./Modal";
 
 const CREATE_COMMENT = gql`
   mutation Mutation($comment: String!) {
@@ -126,7 +122,6 @@ export default function FormInput({
        "
       onSubmit={handleSubmit}
     >
-      <Modal />
       {user?.name !== "Anonymous" && (
         <img
           onClick={handleClick}
@@ -158,23 +153,6 @@ export default function FormInput({
       >
         {isReply ? "پاسخ" : "ارسال"}
       </button>
-      {/* <Switch */}
-      {/*   className={clsx( */}
-      {/*     isDarkMode */}
-      {/*       ? "bg-latteSapphire dark:bg-mochaSapphire" */}
-      {/*       : "bg-latteSubText0 dark:bg-mochaSubText0", */}
-      {/*     "courser-pointer relative inline-flex h-6 w-11 flex-shrink-0 rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-cyan-400 focus:ring-offset-2" */}
-      {/*   )} */}
-      {/*   checked={isDarkMode} */}
-      {/*   onChange={toggleDarkMode} */}
-      {/* > */}
-      {/*   <span */}
-      {/*     className={clsx( */}
-      {/*       isDarkMode ? "-translate-x-5" : "translate-x-0", */}
-      {/*       "pointer-events-none inline-block h-5 w-5 transform rounded-full bg-latteBase shadow ring-0 transition duration-200 ease-in-out " */}
-      {/*     )} */}
-      {/*   ></span> */}
-      {/* </Switch> */}
     </form>
   );
 }

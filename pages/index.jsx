@@ -1,5 +1,6 @@
 import { gql, useMutation } from "@apollo/client";
 import { useState, useEffect } from "react";
+import Modal from "../components/Modal";
 
 import FormInput from "../components/FormInput";
 import CommnetsList from "../components/CommnetsList";
@@ -32,7 +33,7 @@ export default () => {
 
   useEffect(() => {
     document.body.setAttribute("dir", "rtl");
-    document.body.setAttribute("class", "dark");
+
     login({
       variables: {
         email: "juliusomo@email.com",
@@ -56,6 +57,7 @@ export default () => {
         <link rel="shortcut icon" href="/images/favicon.png" />
       </Head>
       <div className="relative mx-auto flex min-h-screen w-full max-w-3xl flex-col-reverse items-center justify-start space-y-1  py-5 px-4 md:px-0">
+        <Modal />
         <FormInput user={user} />
         <CommnetsList user={user} />
       </div>

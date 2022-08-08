@@ -1,14 +1,15 @@
 import { Menu, Transition } from "@headlessui/react";
-import { Fragment, useEffect, useRef, useState } from "react";
+import { Fragment } from "react";
 import { ChevronDownIcon } from "@heroicons/react/solid";
 import { Switch } from "@headlessui/react";
 import { clsx } from "clsx";
-import useDarkMode from "../utils/index";
+
+import { useStore } from "../utils/index.js";
 
 export default function Example() {
-  const { isDarkMode, toggleDarkMode } = useDarkMode();
+  const { darkMode, toggleDarkMode } = useStore();
   return (
-    <div className="fixed top-3 w-56 text-right">
+    <div className="absolute top-3 right-3 z-50 w-56 text-right">
       <Menu as="div" className="relative inline-block text-left">
         <div>
           <Menu.Button className="inline-flex w-full items-center justify-center rounded-full bg-black bg-opacity-20 p-1 text-sm font-medium text-white hover:bg-opacity-30 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75">
@@ -52,22 +53,22 @@ export default function Example() {
               {/*   )} */}
               {/* </Menu.Item> */}
               <Menu.Item>
-                {({ active }) => (
+                {({}) => (
                   <div className="flex items-center justify-between px-1 py-3">
                     حالت تاریک
                     <Switch
                       className={clsx(
-                        isDarkMode
+                        darkMode
                           ? "bg-latteSapphire dark:bg-mochaSapphire"
                           : "bg-latteSubText0 dark:bg-mochaSubText0",
                         "courser-pointer relative inline-flex h-6 w-11 flex-shrink-0 rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-cyan-400 focus:ring-offset-2"
                       )}
-                      checked={isDarkMode}
+                      checked={darkMode}
                       onChange={toggleDarkMode}
                     >
                       <span
                         className={clsx(
-                          isDarkMode ? "-translate-x-5" : "translate-x-0",
+                          darkMode ? "-translate-x-5" : "translate-x-0",
                           "pointer-events-none inline-block h-5 w-5 transform rounded-full bg-latteBase shadow ring-0 transition duration-200 ease-in-out "
                         )}
                       ></span>

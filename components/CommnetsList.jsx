@@ -73,7 +73,7 @@ export default function CommnetsList({ user }) {
 
   if (loading) {
     return (
-      <div className="border-darkBlue relative -top-20 right-0 h-10 w-10 animate-spin items-center justify-center rounded-full border-2 border-b-transparent"></div>
+      <div className=" relative -top-20 right-0 h-10 w-10 animate-spin items-center justify-center rounded-full border-2 border-mochaCrust border-b-transparent dark:border-latteBase dark:border-b-transparent"></div>
     );
   }
 
