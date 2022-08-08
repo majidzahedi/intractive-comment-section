@@ -50,7 +50,7 @@ export const Crud = ({
       >
         <EditIcon className="text-latteSapphire dark:text-mochaSapphire" />
         <span className="text-latteSapphire dark:text-mochaSapphire">
-          {settings.isEditing ? "لغو" : "خروج"}
+          {settings.isEditing ? "لغو" : "ویرایش"}
         </span>
       </button>
       <button
