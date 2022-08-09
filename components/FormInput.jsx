@@ -117,7 +117,7 @@ export default function FormInput({
 
   return (
     <form
-      className=" bottom-0 flex w-full  flex-wrap items-end justify-between  space-y-4  overflow-hidden rounded-xl bg-white p-4 pt-1 shadow-sm dark:bg-mochaBase md:flex-none md:flex-nowrap md:items-start md:space-x-4 md:space-y-0 md:pt-2
+      className=" bottom-0 flex w-full  flex-wrap items-end justify-between  space-y-4   rounded-xl bg-white p-4 pt-1 shadow-sm dark:bg-mochaBase md:flex-none md:flex-nowrap md:items-start md:space-x-4 md:space-y-0 md:pt-2
        "
       onSubmit={handleSubmit}
     >
