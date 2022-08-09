@@ -2,6 +2,7 @@ import { gql, useMutation } from "@apollo/client";
 import DeleteIcon from "../../public/images/icon-delete.svg";
 import EditIcon from "../../public/images/icon-edit.svg";
 import ReplyIcon from "../../public/images/icon-reply.svg";
+import { useStore } from "../../utils/index";
 
 const DELETE = gql`
   mutation DeleteComment($commentId: ID!) {
@@ -20,24 +21,26 @@ export const Crud = ({
   toggleReply,
   visability = "hidden md:flex",
 }) => {
-  const [deleteComment, { loading }] = useMutation(DELETE);
+  // const [deleteComment, { loading }] = useMutation(DELETE);
 
-  function handleDelete() {
-    deleteComment({
-      variables: { commentId },
-      refetchQueries: ["Comments"],
-      onCompleted: () => {},
-    });
-  }
+  // function handleDelete() {
+  //   deleteComment({
+  //     variables: { commentId },
+  //     refetchQueries: ["Comments"],
+  //     onCompleted: () => {},
+  //   });
+  // }
 
+  const { openModal, isOpen } = useStore();
   return (
     <div className={`${visability} space-x-5 rtl:space-x-reverse  `}>
       <button
         className={`text-softRed flex items-center space-x-1 font-medium hover:opacity-70 disabled:opacity-90 rtl:flex-row-reverse  ${
           !isCommentOwner && "hidden"
-        } ${loading ? "animate-pulse" : ""}`}
-        onClick={handleDelete}
-        disabled={loading}
+        } ${isOpen ? "animate-pulse" : ""}`}
+        // onClick={handleDelete}
+        onClick={(e) => openModal(commentId)}
+        disabled={isOpen}
       >
         <DeleteIcon className="text-latteMarron dark:text-mochaMarron" />
         <p className="text-latteMarron dark:text-mochaMarron">حذف</p>

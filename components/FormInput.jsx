@@ -1,4 +1,5 @@
 import { gql, useMutation } from "@apollo/client";
+import DeleteModal from "./DeleteModal";
 
 const CREATE_COMMENT = gql`
   mutation Mutation($comment: String!) {
@@ -38,8 +39,6 @@ export default function FormInput({
   isReply,
   setIsReply,
 }) {
-  // const { isDarkMode, toggleDarkMode } = useDarkMode();
-
   const [createComment, { loading: createLoading }] = useMutation(
     CREATE_COMMENT,
     {

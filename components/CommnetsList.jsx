@@ -1,6 +1,7 @@
 import { useEffect, useRef } from "react";
 import { useQuery, gql } from "@apollo/client";
 import Comment from "./comment";
+import DeleteModal from "./DeleteModal";
 
 const COMMENTS = gql`
   query Comments($last: Int, $before: String) {
@@ -115,6 +116,7 @@ export default function CommnetsList({ user }) {
       ))}
 
       <div ref={bottomRef} />
+      <DeleteModal />
     </div>
   );
 }
