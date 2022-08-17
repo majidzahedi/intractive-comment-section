@@ -32,8 +32,6 @@ export default () => {
   });
 
   useEffect(() => {
-    document.body.setAttribute("dir", "rtl");
-
     login({
       variables: {
         email: "juliusomo@email.com",
@@ -53,11 +51,14 @@ export default () => {
     <div className="conteiner relative min-h-screen bg-crust transition-colors duration-300">
       <Head>
         <title>Comment Section</title>
-        <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+        <meta
+          name="viewport"
+          content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+        />
         <link rel="shortcut icon" href="/images/favicon.png" />
       </Head>
       <div className="relative mx-auto flex min-h-screen w-full max-w-3xl flex-col-reverse items-center justify-start space-y-1 py-5 px-4  transition-colors duration-300 md:px-0">
-        <Modal />
+        {/* <Modal /> */}
         <FormInput user={user} />
         <CommnetsList user={user} />
       </div>

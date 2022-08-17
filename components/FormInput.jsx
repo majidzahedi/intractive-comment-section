@@ -1,5 +1,6 @@
 import { gql, useMutation } from "@apollo/client";
 import DeleteModal from "./DeleteModal";
+import MenuComponent from "./Menu";
 
 const CREATE_COMMENT = gql`
   mutation Mutation($comment: String!) {
@@ -117,11 +118,12 @@ export default function FormInput({
 
   return (
     <form
-      className=" bottom-0 flex w-full  flex-wrap items-end justify-between space-y-4 rounded-xl  bg-base   p-4 pt-1 shadow-sm transition-colors duration-300  md:flex-none md:flex-nowrap md:items-start md:space-x-4 md:space-y-0 md:pt-2
+      className=" relative bottom-0 flex w-full  flex-wrap items-end justify-between space-y-4 rounded-xl  bg-base   p-4 pt-1 shadow-sm transition-colors duration-300  md:flex-none md:flex-nowrap md:items-start md:space-x-4 md:space-y-0 md:pt-2
        "
       onSubmit={handleSubmit}
     >
-      {user?.name !== "Anonymous" && (
+      <MenuComponent user={user} />
+      {/* {user?.name !== "Anonymous" && (
         <img
           onClick={handleClick}
           src={`/images/avatars/image-${user?.name}.png`}
@@ -136,7 +138,7 @@ export default function FormInput({
         >
           <span>A</span>
         </div>
-      )}
+      )} */}
       <textarea
         autoFocus
         placeholder="اضافه کردن نظر ..."
