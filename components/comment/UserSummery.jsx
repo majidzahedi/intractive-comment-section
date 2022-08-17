@@ -15,18 +15,14 @@ export const UserSummery = ({
           alt=""
           className="w-7"
         />
-        <p className="text-sm font-medium text-latteText dark:text-mochaText">
-          {commentUserName}
-        </p>
+        <p className="text-sm font-medium text-subtext1 ">{commentUserName}</p>
         <p
           hidden={!isCommentOwner}
-          className="rounded-sm bg-latteSapphire px-1 text-xs font-medium text-white"
+          className="rounded-sm bg-sapphire px-1 text-xs font-medium text-crust"
         >
           شما
         </p>
-        <p className="text-sm text-latteSubText0 dark:text-mochaSubText0">
-          {moment(createdAt).fromNow()}
-        </p>
+        <p className="text-sm text-subtext0 ">{moment(createdAt).fromNow()}</p>
       </div>
       {children}
     </div>

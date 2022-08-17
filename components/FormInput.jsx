@@ -92,19 +92,19 @@ export default function FormInput({
   if (edditing) {
     return (
       <form
-        className="flex w-full flex-col items-end justify-between space-x-0 space-y-2 rounded-xl bg-white p-4  px-0 py-0 pt-1 dark:bg-mochaBase md:items-start md:space-x-4 md:pt-2
+        className="flex w-full flex-col items-end justify-between space-x-0 space-y-2 rounded-xl bg-base p-4 px-0 py-0  pt-1 transition-colors duration-300  md:items-start md:space-x-4 md:pt-2
       "
         onSubmit={handleSubmit}
       >
         <textarea
           autoFocus
           placeholder="اضافه کردن نظر..."
-          className="border-lightGray order-first h-24 w-full rounded-lg border px-3 py-2 text-mochaText scrollbar-hide dark:bg-mochaBase md:order-none"
+          className=" order-first h-20 w-full rounded-lg border border-overlay0 bg-mantle px-3 py-2 text-text transition-colors duration-300 scrollbar-hide placeholder:text-subtext0  md:order-none"
           defaultValue={comment.comment}
         />
         <button
           type="submit"
-          className={`flex space-x-1 self-end rounded-lg bg-latteSapphire px-6 py-2 font-sans font-medium text-white hover:opacity-75 disabled:opacity-95 dark:bg-mochaSapphire dark:text-mochaCrust ${
+          className={`flex space-x-1 self-end rounded-lg bg-sapphire px-6 py-2 font-sans font-medium  text-crust hover:opacity-75 disabled:opacity-95  ${
             updateLoading ? "animate-pulse" : ""
           }`}
           disabled={user?.name === "Anonymous" || updateLoading}
@@ -117,7 +117,7 @@ export default function FormInput({
 
   return (
     <form
-      className=" bottom-0 flex w-full  flex-wrap items-end justify-between  space-y-4   rounded-xl bg-white p-4 pt-1 shadow-sm dark:bg-mochaBase md:flex-none md:flex-nowrap md:items-start md:space-x-4 md:space-y-0 md:pt-2
+      className=" bottom-0 flex w-full  flex-wrap items-end justify-between space-y-4 rounded-xl  bg-base   p-4 pt-1 shadow-sm transition-colors duration-300  md:flex-none md:flex-nowrap md:items-start md:space-x-4 md:space-y-0 md:pt-2
        "
       onSubmit={handleSubmit}
     >
@@ -140,12 +140,12 @@ export default function FormInput({
       <textarea
         autoFocus
         placeholder="اضافه کردن نظر ..."
-        className="border-lightGray order-first h-20 w-full rounded-lg border border-latteOverlay0 bg-white px-3 py-2 scrollbar-hide dark:border-mochaOverlay0 dark:bg-mochaBase dark:text-mochaText md:order-none"
+        className=" order-first h-20 w-full rounded-lg border border-overlay0 bg-mantle px-3 py-2 text-text transition-colors duration-300 scrollbar-hide placeholder:text-subtext0  md:order-none"
         disabled={user?.name === "Anonymous"}
       />
       <button
         type="submit"
-        className={`flex space-x-1 rounded-lg bg-latteSapphire px-6 py-2 font-sans font-medium text-white hover:opacity-75 disabled:opacity-95 dark:bg-mochaSapphire dark:text-mochaCrust ${
+        className={`flex space-x-1 rounded-lg bg-sapphire px-6 py-2 font-sans font-medium text-crust hover:opacity-75 disabled:opacity-95  ${
           createLoading || replyLoading ? "animate-pulse" : ""
         }`}
         disabled={user?.name === "Anonymous" || createLoading || replyLoading}

@@ -51,17 +51,17 @@ export const Rate = ({ vote, commentId, isCommentOwner, isUserVoted }) => {
   }
 
   return (
-    <div className="flex items-center justify-center space-x-3 rounded-lg bg-latteSapphire/10 py-2 px-4 rtl:space-x-reverse  md:flex-col md:space-y-1 md:space-x-0 md:p-4">
+    <div className="flex items-center justify-center space-x-3 rounded-lg bg-sapphire/10 py-2 px-4 rtl:space-x-reverse  md:flex-col md:space-y-1 md:space-x-0 md:p-4">
       <button
-        className="font-bold text-latteSapphire/50 "
+        className="font-bold text-sapphire/50 "
         onClick={isUserVoted ? handleRemoveVote : handleUpVote}
         disabled={isCommentOwner}
       >
         +
       </button>
-      <span className="font-bold text-latteSapphire">{vote}</span>
+      <span className="font-bold text-sapphire">{vote}</span>
       <button
-        className="font-bold text-latteSapphire/50"
+        className="font-bold text-sapphire/50"
         onClick={isUserVoted ? handleRemoveVote : handleDownVote}
         disabled={isCommentOwner}
       >

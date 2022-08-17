@@ -5,14 +5,14 @@ export const useStore = create(
   subscribeWithSelector(
     persist(
       (set) => ({
-        darkMode: false,
+        darkMode: "latte",
         modal: {
           commentId: "",
           isOpen: false,
         },
-        toggleDarkMode: () => {
+        toggleDarkMode: (theme) => {
           set((state) => {
-            state.darkMode = !state.darkMode;
+            state.darkMode = theme;
           });
         },
         openModal: (commentId) => {
@@ -30,7 +30,7 @@ export const useStore = create(
       }),
       {
         name: "settings",
-        getStorage: () => sessionStorage,
+        getStorage: () => localStorage,
       }
     )
   )
@@ -41,9 +41,9 @@ useStore.subscribe(
   (state) => {
     if (typeof window !== "undefined") {
       // Perform localStorage action
-      document
-        .querySelector("body")
-        .setAttribute("class", state ? "dark" : "light");
+      console.log("theme", state);
+      document.body.classList = state;
+      // document.querySelector("body").setAttribute("class", state.darkMode);
     }
   },
   { fireImmediately: true }

@@ -8,8 +8,6 @@ export const CommentField = ({ edditing, comment, setIsEditing }) => {
       toggleEdit={setIsEditing}
     />
   ) : (
-    <p className="text-base text-latteSubText0 dark:text-mochaSubText0">
-      {comment.comment}
-    </p>
+    <p className="text-text">{comment.comment}</p>
   );
 };

@@ -68,7 +68,7 @@ export default function DeleteModal({}) {
             leaveFrom="opacity-100"
             leaveTo="opacity-0"
           >
-            <div className="fixed inset-0 bg-black bg-opacity-25" />
+            <div className=" fixed inset-0 bg-base/10 backdrop-blur-sm" />
           </Transition.Child>
 
           <div className="fixed inset-0 overflow-y-auto" dir="rtl">
@@ -82,15 +82,15 @@ export default function DeleteModal({}) {
                 leaveFrom="opacity-100 scale-100"
                 leaveTo="opacity-0 scale-95"
               >
-                <Dialog.Panel className="w-full max-w-sm transform overflow-hidden rounded-2xl bg-white p-10 px-6 text-start  align-middle shadow-xl transition-all dark:bg-mochaBase">
+                <Dialog.Panel className=" w-full max-w-sm transform overflow-hidden rounded-2xl bg-crust p-10 px-6  text-start align-middle  shadow-sm   transition-all">
                   <Dialog.Title
                     as="h3"
-                    className="text-start text-lg font-medium leading-6 text-latteText dark:text-mochaText"
+                    className="text-start  text-lg font-medium leading-6 text-text"
                   >
                     حذف پیام
                   </Dialog.Title>
                   <div className="mt-4">
-                    <p className=" text-latteSubText0 dark:text-mochaSubText0">
+                    <p className=" text-subtext0 ">
                       آیا مطمئن هستید که می خواهید این پیام را حذف کنید؟ این
                       پیام حذف می شود و قابل برگشت نیست.{" "}
                     </p>
@@ -100,7 +100,7 @@ export default function DeleteModal({}) {
                     <button
                       type="button"
                       className={clsx(
-                        "inline-flex justify-center rounded-xl border border-transparent  bg-latteMarron px-8 py-2 text-lg font-medium text-white  hover:bg-latteMarron/80 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-latteMarron dark:bg-mochaMarron dark:text-mochaBase dark:hover:bg-mochaMarron/80",
+                        "focus-visible:ring-offsbg-maroon inline-flex justify-center  rounded-xl border border-transparent bg-maroon px-8  py-2 text-lg font-medium text-crust hover:bg-maroon/80 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2",
                         loading && "animate-pulse"
                       )}
                       onClick={handleDelete}
@@ -109,7 +109,7 @@ export default function DeleteModal({}) {
                     </button>
                     <button
                       type="button"
-                      className="inline-flex justify-center rounded-xl border border-transparent  bg-gray-500 px-8 py-2 text-lg font-medium text-white hover:bg-gray-500/80 focus:outline-none focus-visible:ring-2 focus-visible:ring-gray-500 focus-visible:ring-offset-2 dark:bg-gray-300 dark:text-mochaBase dark:hover:bg-gray-300/80"
+                      className=" inline-flex justify-center rounded-xl border  border-transparent bg-text px-8 py-2 text-lg font-medium text-crust hover:bg-text/80 focus:outline-none focus-visible:ring-2 focus-visible:ring-text focus-visible:ring-offset-2 "
                       onClick={closeModal}
                     >
                       خیر لغو کن

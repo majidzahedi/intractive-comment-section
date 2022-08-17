@@ -74,7 +74,7 @@ export default function CommnetsList({ user }) {
 
   if (loading) {
     return (
-      <div className=" relative -top-20 right-0 h-10 w-10 animate-spin items-center justify-center rounded-full border-2 border-mochaCrust border-b-transparent dark:border-latteBase dark:border-b-transparent"></div>
+      <div className=" relative -top-20 right-0 h-10 w-10 animate-spin items-center justify-center rounded-full border-2 border-blue border-b-transparent dark:border-b-transparent"></div>
     );
   }
 
@@ -85,7 +85,7 @@ export default function CommnetsList({ user }) {
       <div ref={currentRef} />
       {hasPreviousPage ? (
         <button
-          className="bg-moderateBlue mb-3 flex space-x-1 self-center rounded-lg px-6 py-2 font-sans font-medium text-white hover:opacity-75 disabled:opacity-95 rtl:space-x-reverse"
+          className="mb-3 flex space-x-1 self-center rounded-lg bg-surface0 px-6 py-2 font-sans font-medium text-text hover:opacity-75 disabled:opacity-95 rtl:space-x-reverse"
           onClick={() => {
             fetchMore({
               variables: { before: startCursor },
@@ -102,7 +102,7 @@ export default function CommnetsList({ user }) {
           LoadMore
         </button>
       ) : (
-        <p className="text-darkBlue pb-5 text-center font-medium dark:text-mochaSubText0">
+        <p className="pb-5 text-center font-medium text-text ">
           به آخر رسیدید ...
         </p>
       )}

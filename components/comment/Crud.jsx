@@ -20,7 +20,7 @@ export const Crud = ({
     <div className={`${visability} space-x-5 rtl:space-x-reverse`}>
       <button
         className={clsx(
-          "flex items-center space-x-1 font-medium text-latteMarron hover:opacity-70 disabled:opacity-50 rtl:flex-row-reverse dark:text-mochaMarron",
+          "flex items-center space-x-1 font-medium text-maroon hover:opacity-70 disabled:opacity-50 rtl:flex-row-reverse ",
           isCommentOwner ? "block" : "hidden"
         )}
         onClick={() => openModal(commentId)}
@@ -32,7 +32,7 @@ export const Crud = ({
 
       <button
         className={clsx(
-          " flex items-center space-x-1 font-medium text-latteSapphire hover:opacity-50 rtl:flex-row-reverse  dark:text-mochaSapphire",
+          " flex items-center space-x-1 font-medium text-sapphire hover:opacity-50 rtl:flex-row-reverse  ",
           isCommentOwner ? "block" : "hidden"
         )}
         onClick={toggleEdit}
@@ -44,7 +44,7 @@ export const Crud = ({
       <button
         disabled={isAnonymous}
         className={clsx(
-          "flex items-center space-x-1 font-medium text-latteSapphire hover:opacity-70 disabled:opacity-70 rtl:flex-row-reverse dark:text-mochaSapphire",
+          "flex items-center space-x-1 font-medium text-sapphire hover:opacity-70 disabled:opacity-70 rtl:flex-row-reverse ",
           isCommentOwner ? "hidden" : "block"
         )}
         onClick={() => {
